@@ -12,7 +12,7 @@ const LatestOrder = (props: any) => {
       {loading ? (
         <Loading />
       ) : error ? (
-        <Message variant="alert-danger">{error}</Message>
+        <Message variant="alert-danger" mess={JSON.stringify(error)}></Message>
       ) : (
         <div className="table-responsive">
           <table className="table">

@@ -1,9 +1,14 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-// import { logout } from "../Redux/Actions/userActions";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userLogout } from "../store/components/auth/authSlice";
+
 var $ = require("jquery");
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     $("[data-trigger]").on("click", function (e: any) {
       e.preventDefault();
@@ -24,7 +29,7 @@ const Header = () => {
   }, []);
 
   const logoutHandler = () => {
-    // dispatch(logout());
+    dispatch(userLogout());
   };
 
   return (

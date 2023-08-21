@@ -55,6 +55,12 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["getProfile__TAG"],
     }),
+    getAllMember: builder.query({
+      query: (data) => ({
+        url: `/users/all`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -63,4 +69,5 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useUpdateProfileMutation,
+  useGetAllMemberQuery,
 } = authApi;

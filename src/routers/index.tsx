@@ -1,4 +1,6 @@
 import HomeScreen from "../screens/HomeScreen";
+import Login from "../screens/LoginScreen";
+import UsersScreen from "../screens/UsersScreen";
 
 export const PrivateRoutes = [
   {
@@ -9,10 +11,10 @@ export const PrivateRoutes = [
   //   path: "/search/:keyword",
   //   element: <HomeScreen />,
   // },
-  // {
-  //   path: "/product-detail",
-  //   element: <SingleProduct />,
-  // },
+  {
+    path: "/users",
+    element: <UsersScreen />,
+  },
   // {
   //   path: "/cart/:id",
   //   element: <CartScreen />,
@@ -41,10 +43,10 @@ export const PrivateRoutes = [
   //   path: "/register",
   //   element: <Register />,
   // },
-  // {
-  //   path: "/login",
-  //   element: <Login />,
-  // },
+  {
+    path: "/login",
+    element: <Login />,
+  },
   // {
   //   path: "*",
   //   element: <NotFound />,

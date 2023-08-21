@@ -1,5 +1,5 @@
 import "./App.scss";
-import "./responsive.css";
+import "./responsive.scss";
 import "react-toastify/dist/ReactToastify.css";
 
 import { Routes, Route, useLocation } from "react-router-dom";

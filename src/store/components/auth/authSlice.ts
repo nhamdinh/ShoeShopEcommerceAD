@@ -17,6 +17,7 @@ const authSlice = createSlice({
     userLogout: (state: IfAuth, action: PayloadAction) => {
       state.accessToken = "";
       localStorage.clear();
+      window.location.href = "/login";
     },
     setUserInfo: (state: IfAuth, action: PayloadAction) => {
       state.userInfo = action.payload;

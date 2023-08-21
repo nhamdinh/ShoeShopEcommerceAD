@@ -38,3 +38,7 @@ export const formatMoney = (text: any) => {
     }
   }
 };
+
+export const rawMarkup = (rawMarkup = "") => {
+  return { __html: rawMarkup };
+};
