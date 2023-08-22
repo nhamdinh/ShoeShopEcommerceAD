@@ -57,7 +57,7 @@ export const authApi = createApi({
     }),
     getAllMember: builder.query({
       query: (data) => ({
-        url: `/users/all`,
+        url: `/users/all-admin`,
         method: "GET",
       }),
     }),

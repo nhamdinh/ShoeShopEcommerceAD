@@ -1,5 +1,6 @@
 import HomeScreen from "../screens/HomeScreen";
 import Login from "../screens/LoginScreen";
+import ProductScreen from "../screens/ProductScreen";
 import UsersScreen from "../screens/UsersScreen";
 
 export const PrivateRoutes = [
@@ -15,10 +16,10 @@ export const PrivateRoutes = [
     path: "/users",
     element: <UsersScreen />,
   },
-  // {
-  //   path: "/cart/:id",
-  //   element: <CartScreen />,
-  // },
+  {
+    path: "/products",
+    element: <ProductScreen />,
+  },
   // {
   //   path: "/profile",
   //   element: <ProfileScreen />,

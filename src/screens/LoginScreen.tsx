@@ -45,9 +45,6 @@ const Login = () => {
         navigate("/");
       } else {
         toast.error("You are not Admin", ToastObjects);
-        localStorage.setItem(ACCESSTOKEN_STORAGE, data.token);
-        localStorage.setItem(NAME_STORAGE, data.name);
-        navigate("/");
       }
     } else {
       setisError(true);

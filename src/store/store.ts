@@ -4,6 +4,7 @@ import {
   MiddlewareAPI,
   Middleware,
 } from "@reduxjs/toolkit";
+import dialogReducer from "./components/customDialog/dialogSlice";
 import { productsApi } from "./components/products/productsApi";
 import { ordersApi } from "./components/orders/ordersApi";
 import { authApi } from "./components/auth/authApi";
@@ -11,7 +12,6 @@ import authReducer, { userLogout } from "./components/auth/authSlice";
 
 /*import authReducer, { userLogout } from "../pages/Auth/authSlice";
 import modalReducer from "../components/customModal/modalSlice";
-import dialogReducer from "../components/customDialog/dialogSlice";
 import { memberApi } from "../pages/MemberManagement/memberApi";
 import { settlementApi } from "../pages/SettlementManagement/settlementApi";
 import { dispatchApi } from "../pages/DispatchManagement/dispatchApi";
@@ -30,7 +30,8 @@ const rootReducer = {
   [faqApi.reducerPath]: faqApi.reducer,
   [advertisementApi.reducerPath]: advertisementApi.reducer,
   modal: modalReducer,
-  dialog: dialogReducer, */
+   */
+  dialog: dialogReducer,
 };
 const rtkQueryErrorLogger: Middleware =
   (api: MiddlewareAPI) => (next) => (action) => {

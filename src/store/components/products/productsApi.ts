@@ -27,7 +27,7 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: (data) => ({
-        url: `/products/get-all?keyword=${data?.keyword}`,
+        url: `/products/all-admin?keyword=${data?.keyword}`,
         method: "GET",
       }),
       providesTags: ["GetProducts"],
@@ -38,6 +38,13 @@ export const productsApi = createApi({
         method: "GET",
       }),
       providesTags: ["GetProductsDetail"],
+    }),
+    deleteProduct: builder.mutation({
+      query: (data) => ({
+        url: `/products/delete/${data.productId}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["GetProducts"],
     }),
     createReviewProduct: builder.mutation({
       query: (data) => ({
@@ -54,4 +61,5 @@ export const {
   useGetProductsQuery,
   useGetProductsDetailQuery,
   useCreateReviewProductMutation,
+  useDeleteProductMutation,
 } = productsApi;

@@ -13,7 +13,6 @@ const UserComponent = () => {
       skip: false,
     }
   );
-  console.log(error);
 
   useEffect(() => {
     if (isSuccess) {
