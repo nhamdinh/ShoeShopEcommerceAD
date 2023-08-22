@@ -39,6 +39,19 @@ export const formatMoney = (text: any) => {
   }
 };
 
+export const formatMoneyCurrency = (text: any) => {
+  if (!text) {
+    return "0.00";
+  }
+  //format china currency delivery_type === 1
+  let numberText = +text;
+  let string = numberText.toFixed(2).toString();
+  let length = string.length;
+  let string_slice = string.substr(0, length - 3);
+  let string_slice3 = string.substr(length - 3, length - 1);
+  return addCommas(removeNonNumeric(string_slice)) + string_slice3;
+};
+
 export const rawMarkup = (rawMarkup = "") => {
   return { __html: rawMarkup };
 };

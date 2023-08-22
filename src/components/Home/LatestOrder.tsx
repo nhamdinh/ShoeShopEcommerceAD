@@ -1,15 +1,13 @@
 import moment from "moment";
-import React from "react";
 import { Link } from "react-router-dom";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
 
-const LatestOrder = (props: any) => {
-  const { loading, error, orders } = props;
+const LatestOrder = ({ orders, isLoading, error }: any) => {
   return (
     <div className="card-body">
       <h4 className="card-title">New orders</h4>
-      {loading ? (
+      {isLoading ? (
         <Loading />
       ) : error ? (
         <Message variant="alert-danger" mess={JSON.stringify(error)}></Message>

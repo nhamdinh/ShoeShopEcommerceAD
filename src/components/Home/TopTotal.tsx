@@ -1,13 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { formatMoney, formatMoneyCurrency } from "../../utils/commonFunction";
+import { useGetProductsQuery } from "../../store/components/products/productsApi";
 
-const TopTotal = (props: any) => {
-  const { orders, products } = props;
-  let totalSale = 0;
-  if (orders) {
-    orders.map((order: any) =>
-      order.isPaid === true ? (totalSale = totalSale + order.totalPrice) : null
-    );
-  }
+const TopTotal = ({ orders }: any) => {
+  const [products, setdataFetched] = useState<any>([]);
+  const { data, error, isSuccess, isLoading } = useGetProductsQuery(
+    {
+      page: 1,
+      limit: 100,
+      order: "desc",
+      orderBy: "createdAt",
+      keyword: "",
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+  useEffect(() => {
+    if (isSuccess) {
+      setdataFetched(data);
+    }
+  }, [data]);
+
+  const [totalSale, settotalSale] = useState<any>(0);
+  useEffect(() => {
+    let totalSale_temp = 0;
+    if (orders) {
+      orders.map((order: any) =>
+        order.isPaid === true
+          ? (totalSale_temp = +totalSale_temp + +order.totalPrice)
+          : null
+      );
+    }
+    settotalSale(totalSale_temp);
+  }, [orders]);
+
   return (
     <div className="row">
       <div className="col-lg-4">
@@ -18,7 +46,7 @@ const TopTotal = (props: any) => {
             </span>
             <div className="text">
               <h6 className="mb-1">Total Sales</h6>{" "}
-              <span>${totalSale.toFixed(0)}</span>
+              <span>$ {formatMoneyCurrency(totalSale)}</span>
             </div>
           </article>
         </div>
@@ -31,7 +59,11 @@ const TopTotal = (props: any) => {
             </span>
             <div className="text">
               <h6 className="mb-1">Total Orders</h6>
-              {orders ? <span>{orders.length}</span> : <span>0</span>}
+              {orders ? (
+                <span>{formatMoney(orders.length)}</span>
+              ) : (
+                <span>0</span>
+              )}
             </div>
           </article>
         </div>
@@ -44,7 +76,11 @@ const TopTotal = (props: any) => {
             </span>
             <div className="text">
               <h6 className="mb-1">Total Products</h6>
-              {products ? <span>{products.length}</span> : <span>0</span>}
+              {products ? (
+                <span>{formatMoney(products?.length)}</span>
+              ) : (
+                <span>0</span>
+              )}
             </div>
           </article>
         </div>

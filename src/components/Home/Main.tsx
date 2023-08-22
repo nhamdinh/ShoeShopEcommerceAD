@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TopTotal from "./TopTotal";
 import LatestOrder from "./LatestOrder";
 import SaleStatistics from "./SalesStatistics";
 import ProductsStatistics from "./ProductsStatistics";
+import { useGetOrderAdQuery } from "../../store/components/orders/ordersApi";
 
 const Main = () => {
-  const orderList: any = {};
-  const { loading, error, orders } = orderList;
-  const productList: any = {};
-  const { products } = productList;
+  const [orders, setorders] = useState<any>([]);
+
+  const {
+    data: dataFetch,
+    error,
+    isSuccess,
+    isLoading,
+  } = useGetOrderAdQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setorders(dataFetch);
+    }
+  }, [dataFetch]);
+
   return (
     <>
       <section className="content-main">
@@ -16,7 +34,7 @@ const Main = () => {
           <h2 className="content-title"> Dashboard </h2>
         </div>
         {/* Top Total */}
-        <TopTotal orders={orders} products={products} />
+        <TopTotal orders={orders} />
 
         <div className="row">
           {/* STATICS */}
@@ -26,7 +44,7 @@ const Main = () => {
 
         {/* LATEST ORDER */}
         <div className="card mb-4 shadow-sm">
-          <LatestOrder orders={orders} loading={loading} error={error} />
+          <LatestOrder orders={orders} isLoading={isLoading} error={error} />
         </div>
       </section>
     </>

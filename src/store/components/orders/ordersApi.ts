@@ -73,6 +73,14 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["getOrderDetail__TAG"],
     }),
+    deliveredOrder: builder.mutation({
+      query: (data) => ({
+        url: `orders/${data.orderId}/delivered`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["getOrderDetail__TAG"],
+    }),
     getOrderAd: builder.query({
       query: (data) => ({
         url: `orders/all-admin`,
@@ -90,5 +98,6 @@ export const {
   useCreateOrderMutation,
   useGetOrderDetailQuery,
   usePayOrderMutation,
+  useDeliveredOrderMutation,
   useGetOrderAdQuery,
 } = ordersApi;

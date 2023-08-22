@@ -12,12 +12,13 @@ import { ToastObjects } from "../../utils/constants";
 const MainProducts = () => {
   const dispatch = useDispatch();
 
-  const [products, setdataFetched] = useState<any>([]);
+
   const [callDel, setcallDel] = useState<any>({
     call: Date.now(),
     state: 3,
   });
 
+  const [products, setdataFetched] = useState<any>([]);
   const { data, error, isSuccess, isLoading } = useGetProductsQuery(
     {
       page: 1,
