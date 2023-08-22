@@ -73,9 +73,9 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["getOrderDetail__TAG"],
     }),
-    getOrderUser: builder.query({
+    getOrderAd: builder.query({
       query: (data) => ({
-        url: `orders/all`,
+        url: `orders/all-admin`,
         method: "GET",
       }),
     }),
@@ -90,5 +90,5 @@ export const {
   useCreateOrderMutation,
   useGetOrderDetailQuery,
   usePayOrderMutation,
-  useGetOrderUserQuery,
+  useGetOrderAdQuery,
 } = ordersApi;
