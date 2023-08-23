@@ -4,7 +4,11 @@ import Loading from "../components/LoadingError/Loading";
 import Toast from "../components/LoadingError/Toast";
 import Message from "../components/LoadingError/Error";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ACCESSTOKEN_STORAGE, NAME_STORAGE } from "../utils/constants";
+import {
+  ACCESSTOKEN_STORAGE,
+  NAME_STORAGE,
+  ToastObjects,
+} from "../utils/constants";
 import { useLoginMutation } from "../store/components/auth/authApi";
 import { toast } from "react-toastify";
 
@@ -15,21 +19,6 @@ const Login = () => {
   const [email, setEmail] = useState<any>("");
   const [password, setPassword] = useState<any>("");
   const [isError, setisError] = useState<any>(false);
-
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     navigate("/");
-  //   }
-  // }, [userInfo]);
-
-  const ToastObjects = {
-    pauseOnFocusLoss: false,
-    draggable: false,
-    pauseOnHover: false,
-    autoClose: 2000,
-  };
 
   const [login, { isLoading, error }] = useLoginMutation();
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { formatCustomerPhoneNumber } from "../../utils/commonFunction";
 
 const Orders = ({ orders }: any) => {
   return (
@@ -9,6 +10,7 @@ const Orders = ({ orders }: any) => {
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
+          <th scope="col">Phone</th>
           <th scope="col">Total</th>
           <th scope="col">Paid</th>
           <th scope="col">Date</th>
@@ -22,9 +24,10 @@ const Orders = ({ orders }: any) => {
         {orders?.map((order: any) => (
           <tr key={order?._id}>
             <td>
-              <b>{order?.user.name}</b>
+              <b>{order?.user?.name}</b>
             </td>
-            <td>{order?.user.email}</td>
+            <td>{order?.user?.email}</td>
+            <td>{formatCustomerPhoneNumber(order?.user?.phone)}</td>
             <td>${order?.totalPrice}</td>
             <td>
               {order?.isPaid ? (

@@ -55,3 +55,9 @@ export const formatMoneyCurrency = (text: any) => {
 export const rawMarkup = (rawMarkup = "") => {
   return { __html: rawMarkup };
 };
+
+export const formatCustomerPhoneNumber = (value: string) => {
+  if (!value) return;
+  //KOC 516
+  return `${value.slice(0, 4)}-${value.slice(4, 7)}-${value.slice(7)}`;
+};

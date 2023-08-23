@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { formatMoney, formatMoneyCurrency } from "../../utils/commonFunction";
 import { useGetProductsQuery } from "../../store/components/products/productsApi";
+import { useNavigate } from "react-router-dom";
 
 const TopTotal = ({ orders }: any) => {
+  const navigate = useNavigate();
+
   const [products, setdataFetched] = useState<any>([]);
   const { data, error, isSuccess, isLoading } = useGetProductsQuery(
     {
@@ -53,7 +56,12 @@ const TopTotal = ({ orders }: any) => {
       </div>
       <div className="col-lg-4">
         <div className="card card-body mb-4 shadow-sm">
-          <article className="icontext">
+          <article
+            className="icontext"
+            onClick={() => {
+              navigate("/orders");
+            }}
+          >
             <span className="icon icon-sm rounded-circle alert-success">
               <i className="text-success fas fa-bags-shopping"></i>
             </span>
@@ -70,7 +78,12 @@ const TopTotal = ({ orders }: any) => {
       </div>
       <div className="col-lg-4">
         <div className="card card-body mb-4 shadow-sm">
-          <article className="icontext">
+          <article
+            className="icontext"
+            onClick={() => {
+              navigate("/products");
+            }}
+          >
             <span className="icon icon-sm rounded-circle alert-warning">
               <i className="text-warning fas fa-shopping-basket"></i>
             </span>

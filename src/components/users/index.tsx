@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 import { useGetAllMemberQuery } from "../../store/components/auth/authApi";
+import { formatCustomerPhoneNumber } from "../../utils/commonFunction";
 
 const UserComponent = () => {
   const [userList, setdataFetched] = useState<any>([]);
@@ -88,10 +89,12 @@ const UserComponent = () => {
                         ) : (
                           <p className="m-0">Customer</p>
                         )}
+                        <p className="m-0">{formatCustomerPhoneNumber(user?.phone)}</p>
 
                         <p>
                           <a href={`mailto:${user?.email}`}>{user?.email}</a>
                         </p>
+
                       </div>
                     </div>
                   </div>

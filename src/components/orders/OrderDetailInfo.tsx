@@ -1,4 +1,5 @@
 import React from "react";
+import { formatCustomerPhoneNumber } from "../../utils/commonFunction";
 
 const OrderDetailInfo = ({ order }: any) => {
   return (
@@ -11,7 +12,8 @@ const OrderDetailInfo = ({ order }: any) => {
           <div className="text">
             <h6 className="mb-1">Customer</h6>
             <p className="mb-1">
-              {order?.user?.name} <br />
+              {order?.user?.name}-- 
+              {formatCustomerPhoneNumber(order?.user?.phone)}<br />
               <a href={`mailto:${order?.user?.email}`}>{order?.user?.email}</a>
             </p>
           </div>

@@ -7,7 +7,6 @@ var $ = require("jquery");
 
 const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     $("[data-trigger]").on("click", function (e: any) {
