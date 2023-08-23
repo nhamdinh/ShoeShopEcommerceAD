@@ -46,13 +46,27 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["GetProducts"],
     }),
-    createReviewProduct: builder.mutation({
+    updateProduct: builder.mutation({
       query: (data) => ({
-        url: `/products/${data.productId}/review`,
+        url: `/products/${data.productId}/update`,
+        method: "PUT",
+        body: data,
+      }),
+      // invalidatesTags: ["GetProductsDetail"],
+    }),
+    createProduct: builder.mutation({
+      query: (data) => ({
+        url: `/products/create`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["GetProductsDetail"],
+    }),
+    getCategorys: builder.query({
+      query: (data) => ({
+        url: `/categorys/get-all?keyword=${data?.keyword}`,
+        method: "GET",
+      }),
+      providesTags: ["GetProducts"],
     }),
   }),
 });
@@ -60,6 +74,9 @@ export const productsApi = createApi({
 export const {
   useGetProductsQuery,
   useGetProductsDetailQuery,
-  useCreateReviewProductMutation,
   useDeleteProductMutation,
+  useUpdateProductMutation,
+  useCreateProductMutation,
+  useGetCategorysQuery,
+
 } = productsApi;

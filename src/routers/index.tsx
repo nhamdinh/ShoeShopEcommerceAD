@@ -1,7 +1,10 @@
+import AddProduct from "../screens/AddProduct";
 import HomeScreen from "../screens/HomeScreen";
 import Login from "../screens/LoginScreen";
+import NotFound from "../screens/NotFound";
 import OrderDetailScreen from "../screens/OrderDetailScreen";
 import OrderScreen from "../screens/OrderScreen";
+import ProductEditScreen from "../screens/ProductEditScreen";
 import ProductScreen from "../screens/ProductScreen";
 import UsersScreen from "../screens/UsersScreen";
 
@@ -30,10 +33,14 @@ export const PrivateRoutes = [
     path: "/order/:id",
     element: <OrderDetailScreen />,
   },
-  // {
-  //   path: "/profile",
-  //   element: <ProfileScreen />,
-  // },
+  {
+    path: "/product/:id/edit",
+    element: <ProductEditScreen />,
+  },
+  {
+    path: "/addproduct",
+    element: <AddProduct />,
+  },
   // {
   //   path: "/shipping",
   //   element: <ShippingScreen />,
@@ -58,8 +65,8 @@ export const PrivateRoutes = [
     path: "/login",
     element: <Login />,
   },
-  // {
-  //   path: "*",
-  //   element: <NotFound />,
-  // },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ];

@@ -1,74 +1,91 @@
 import React, { useState, useEffect } from "react";
-import Toast from "./../LoadingError/Toast";
+import Toast from "../LoadingError/Toast";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  editProduct,
-  updateProduct,
-} from "./../../Redux/Actions/ProductActions";
-import { PRODUCT_UPDATE_RESET } from "../../Redux/Constants/ProductConstants";
 import { toast } from "react-toastify";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
+import { ToastObjects } from "../../utils/constants";
+import {
+  useGetProductsDetailQuery,
+  useUpdateProductMutation,
+} from "../../store/components/products/productsApi";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const ToastObjects = {
-  pauseOnFocusLoss: false,
-  draggable: false,
-  pauseOnHover: false,
-  autoClose: 2000,
-};
+const EditProductMain = () => {
+  const location = useLocation();
+  const [productId, setproductId] = useState<any>(
+    location.pathname.split("/")[2]
+  );
+  useEffect(() => {
+    setproductId(location.pathname.split("/")[2]);
+  }, [location.pathname]);
 
-const EditProductMain = (props) => {
-  const { productId } = props;
-
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [image, setImage] = useState("");
-  const [countInStock, setCountInStock] = useState(0);
-  const [description, setDescription] = useState("");
-
-  const dispatch = useDispatch();
-
-  const productEdit = useSelector((state) => state.productEdit);
-  const { loading, error, product } = productEdit;
-
-  const productUpdate = useSelector((state) => state.productUpdate);
+  const [product, setdataFetched] = useState<any>({});
   const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = productUpdate;
+    data: dataFetch,
+    error,
+    isSuccess,
+    isLoading,
+  } = useGetProductsDetailQuery(
+    {
+      id: productId,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
 
   useEffect(() => {
-    if (successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET });
+    if (isSuccess) {
+      setdataFetched(dataFetch);
+    }
+  }, [dataFetch]);
+
+  const [name, setName] = useState<any>("");
+  const [price, setPrice] = useState<any>("0");
+  const [image, setImage] = useState<any>("");
+  const [countInStock, setCountInStock] = useState<any>(0);
+  const [description, setDescription] = useState<any>("");
+
+  const [
+    updateProduct,
+    { isLoading: LoadingupdateProduct, error: errorupdateProduct },
+  ] = useUpdateProductMutation();
+
+  const onUpdateProduct = async (values: any) => {
+    const res = await updateProduct(values);
+    //@ts-ignore
+    const data = res?.data;
+
+    if (data) {
       toast.success("Product Updated", ToastObjects);
     } else {
-      if (!product.name || product._id !== productId) {
-        dispatch(editProduct(productId));
-      } else {
-        setName(product.name);
-        setDescription(product.description);
-        setCountInStock(product.countInStock);
-        setImage(product.image);
-        setPrice(product.price);
-      }
-    }
-  }, [product, dispatch, productId, successUpdate]);
+      toast.error("Product Update Fail", ToastObjects);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(
-      updateProduct({
-        _id: productId,
-        name,
-        price,
-        description,
-        image,
-        countInStock,
-      })
-    );
+    }
   };
+
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+    onUpdateProduct({
+      productId: productId,
+      name,
+      price,
+      description,
+      image,
+      countInStock,
+    });
+  };
+
+  useEffect(() => {
+    setName(product?.name);
+    setDescription(product?.description);
+    setCountInStock(product?.countInStock);
+    setImage(product?.image);
+    setPrice(product?.price);
+  }, [product]);
 
   return (
     <>
@@ -91,14 +108,20 @@ const EditProductMain = (props) => {
             <div className="col-xl-8 col-lg-8">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
-                  {errorUpdate && (
-                    <Message variant="alert-danger">{errorUpdate}</Message>
+                  {errorupdateProduct && (
+                    <Message
+                      variant="alert-danger"
+                      mess={JSON.stringify(errorupdateProduct)}
+                    ></Message>
                   )}
-                  {loadingUpdate && <Loading />}
-                  {loading ? (
+                  {LoadingupdateProduct && <Loading />}
+                  {isLoading ? (
                     <Loading />
                   ) : error ? (
-                    <Message variant="alert-danger">{error}</Message>
+                    <Message
+                      variant="alert-danger"
+                      mess={JSON.stringify(error)}
+                    ></Message>
                   ) : (
                     <>
                       <div className="mb-4">
@@ -120,7 +143,7 @@ const EditProductMain = (props) => {
                           Price
                         </label>
                         <input
-                          type="number"
+                          type="text"
                           placeholder="Type here"
                           className="form-control"
                           id="product_price"
@@ -148,7 +171,7 @@ const EditProductMain = (props) => {
                         <textarea
                           placeholder="Type here"
                           className="form-control"
-                          rows="7"
+                          rows={7}
                           required
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}

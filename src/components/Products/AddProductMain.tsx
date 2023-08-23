@@ -1,46 +1,78 @@
+import "./style.scss";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { PRODUCT_CREATE_RESET } from "../../Redux/Constants/ProductConstants";
-import { createProduct } from "./../../Redux/Actions/ProductActions";
 import Toast from "../LoadingError/Toast";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
+import { ToastObjects } from "../../utils/constants";
+import {
+  useCreateProductMutation,
+  useGetCategorysQuery,
+} from "../../store/components/products/productsApi";
 
-const ToastObjects = {
-  pauseOnFocusLoss: false,
-  draggable: false,
-  pauseOnHover: false,
-  autoClose: 2000,
-};
 const AddProductMain = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [image, setImage] = useState("");
-  const [countInStock, setCountInStock] = useState(0);
-  const [description, setDescription] = useState("");
-
-  const dispatch = useDispatch();
-
-  const productCreate = useSelector((state) => state.productCreate);
-  const { loading, error, product } = productCreate;
-
+  const [category, setcategory] = useState<any>("");
+  const [categorys, setdataFetched] = useState<any>([]);
+  const {
+    data,
+    error: categoryserror,
+    isSuccess,
+    isLoading: isLoadingcategorys,
+  } = useGetCategorysQuery(
+    {
+      page: 1,
+      limit: 100,
+      order: "desc",
+      orderBy: "createdAt",
+      keyword: "",
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
   useEffect(() => {
-    if (product) {
+    if (isSuccess) {
+      setdataFetched(data?.categorys);
+      setcategory(data?.categorys[0]?.name);
+    }
+  }, [data]);
+
+  const [name, setName] = useState<any>("");
+  const [price, setPrice] = useState<any>(0);
+  const [image, setImage] = useState<any>("");
+  const [countInStock, setCountInStock] = useState<any>(0);
+  const [description, setDescription] = useState<any>("");
+
+  const [createProduct, { isLoading, error }] = useCreateProductMutation();
+
+  const onCreateProduct = async (values: any) => {
+    const res = await createProduct(values);
+    //@ts-ignore
+    const data = res?.data;
+
+    if (data) {
       toast.success("Product Added", ToastObjects);
-      dispatch({ type: PRODUCT_CREATE_RESET });
       setName("");
       setDescription("");
       setCountInStock(0);
       setImage("");
       setPrice(0);
+    } else {
+      toast.error("Product Add Fail", ToastObjects);
     }
-  }, [product, dispatch]);
+  };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: any) => {
     e.preventDefault();
-    dispatch(createProduct(name, price, description, image, countInStock));
+    onCreateProduct({
+      name,
+      price,
+      description,
+      image,
+      countInStock,
+    });
   };
 
   return (
@@ -64,8 +96,28 @@ const AddProductMain = () => {
             <div className="col-xl-8 col-lg-8">
               <div className="card mb-4 shadow-sm">
                 <div className="card-body">
-                  {error && <Message variant="alert-danger">{error}</Message>}
-                  {loading && <Loading />}
+                  {error && (
+                    <Message
+                      variant="alert-danger"
+                      mess={JSON.stringify(error)}
+                    ></Message>
+                  )}
+                  {isLoading && <Loading />}
+                  <div className="mb-4">
+                    <div className="flex-box d-flex justify-content-between align-items-center">
+                      <h6>Category</h6>
+                      <select
+                        value={category}
+                        onChange={(e) => setcategory(e.target.value)}
+                      >
+                        {categorys.map((category: any, index: number) => (
+                          <option key={index} value={category?.name}>
+                            {category?.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                   <div className="mb-4">
                     <label htmlFor="product_title" className="form-label">
                       Product title
@@ -113,7 +165,7 @@ const AddProductMain = () => {
                     <textarea
                       placeholder="Type here"
                       className="form-control"
-                      rows="7"
+                      rows={7}
                       required
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}

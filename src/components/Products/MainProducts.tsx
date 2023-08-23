@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Product from "./Product";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
@@ -8,10 +7,10 @@ import { useGetProductsQuery } from "../../store/components/products/productsApi
 import Toast from "../LoadingError/Toast";
 import { toast } from "react-toastify";
 import { ToastObjects } from "../../utils/constants";
+import Product from "./Product";
 
 const MainProducts = () => {
   const dispatch = useDispatch();
-
 
   const [callDel, setcallDel] = useState<any>({
     call: Date.now(),
