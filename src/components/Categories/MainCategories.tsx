@@ -7,6 +7,9 @@ import {
   useGetBrandsQuery,
   useGetCategorysQuery,
 } from "../../store/components/products/productsApi";
+import Toast from "../LoadingError/Toast";
+import { toast } from "react-toastify";
+import { ToastObjects } from "../../utils/constants";
 
 const MainCategories = () => {
   const [brands, setbrands] = useState<any>([]);
@@ -48,9 +51,24 @@ const MainCategories = () => {
       setcategorys(data?.categorys);
     }
   }, [data]);
+  const [callDel, setcallDel] = useState<any>({
+    call: Date.now(),
+    state: 3,
+    value: "",
+  });
+
+  useEffect(() => {
+    if (callDel.state === 1) {
+      toast.success(`${callDel.value} Deleted`, ToastObjects);
+    }
+    if (callDel.state === 2) {
+      toast.error(`Delete ${callDel.value} Failed`, ToastObjects);
+    }
+  }, [callDel]);
 
   return (
     <>
+      <Toast></Toast>
       <section className="content-main">
         <div className="content-header">
           <h2 className="content-title">Categories</h2>
@@ -62,7 +80,12 @@ const MainCategories = () => {
               {/* Create category */}
               <CreateCategory />
               {/* Categories table */}
-              <CategoriesTable categorys={categorys} />
+              <CategoriesTable
+                callDelete={(sta: any) => {
+                  setcallDel(sta);
+                }}
+                categorys={categorys}
+              />
             </div>
           </div>
         </div>
@@ -79,7 +102,12 @@ const MainCategories = () => {
               {/* Create category */}
               <CreateBrand />
               {/* Categories table */}
-              <BrandsTable brands={brands} />
+              <BrandsTable
+                callDelete={(sta: any) => {
+                  setcallDel(sta);
+                }}
+                brands={brands}
+              />
             </div>
           </div>
         </div>

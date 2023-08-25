@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
-import { ToastObjects } from "../../utils/constants";
+import { FOLDER_PRODUCS_STORAGE, ToastObjects } from "../../utils/constants";
 import {
   useGetBrandsQuery,
   useGetCategorysQuery,
@@ -35,7 +35,10 @@ const EditProductMain = () => {
       formData.append("file", file);
 
       try {
-        const res: any = await uploadImg(formData);
+        const res: any = await uploadImg({
+          formData,
+          folder: FOLDER_PRODUCS_STORAGE,
+        });
         let data = res?.data;
         if (data) {
           let fileList_temp: any = [];
