@@ -48,9 +48,8 @@ const Product = ({ product, callDelete }: any) => {
             <img src={product?.image} alt="Product" />
           </Link>
           <div className="info-wrap">
-            <Link to="#" className="title text-truncate">
-              {product?.name}
-            </Link>
+            <div className="title text-truncate colorred">Type: {product?.category?.brand +" / "+product?.category?.name}</div>
+            <div className="title text-truncate">{product?.name}</div>
             <div className="price mb-2">${product?.price}</div>
             <div className="row">
               <Link

@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
-import AddProductMain from "../components/Products/AddProductMain";
 import Sidebar from "../components/Sidebar";
+import AddProductMain from "../components/Products/AddProductMain";
 
 const AddProduct = () => {
   return (
