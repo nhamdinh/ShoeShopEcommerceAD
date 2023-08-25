@@ -4,7 +4,7 @@ import { useDeleteCategoryMutation } from "../../store/components/products/produ
 import { useDispatch } from "react-redux";
 import { openDialog } from "../../store/components/customDialog/dialogSlice";
 
-const CategoriesTable = ({ categorys }: any) => {
+const CategoriesTable = ({ categorys, callDelete }: any) => {
   const dispatch = useDispatch();
 
   const [deleteCategory, { isLoading, error }] = useDeleteCategoryMutation();
@@ -13,17 +13,19 @@ const CategoriesTable = ({ categorys }: any) => {
     //@ts-ignore
     const data = res?.data;
 
-    // if (data) {
-    //   callDelete({
-    //     call: Date.now(),
-    //     state: 1,
-    //   });
-    // } else {
-    //   callDelete({
-    //     call: Date.now(),
-    //     state: 2,
-    //   });
-    // }
+    if (data) {
+      callDelete({
+        call: Date.now(),
+        state: 1,
+        value: "Category",
+      });
+    } else {
+      callDelete({
+        call: Date.now(),
+        state: 2,
+        value: "Category",
+      });
+    }
   };
 
   const deletehandler = (id: any) => {
@@ -58,7 +60,7 @@ const CategoriesTable = ({ categorys }: any) => {
         </thead>
         {/* Table Data */}
         <tbody>
-          {categorys?.map((cate: any) => {
+          {categorys?.map((cate: any, index: number) => {
             return (
               <tr key={cate?._id}>
                 <td>
@@ -70,7 +72,7 @@ const CategoriesTable = ({ categorys }: any) => {
                     />
                   </div>
                 </td>
-                <td>1</td>
+                <td>{index+1}</td>
                 <td>
                   <b>{cate?.category}</b>
                 </td>
