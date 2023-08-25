@@ -24,7 +24,7 @@ const CreateCategory = () => {
           <textarea
             placeholder="Type here"
             className="form-control"
-            rows="4"
+            rows={4}
           ></textarea>
         </div>
 

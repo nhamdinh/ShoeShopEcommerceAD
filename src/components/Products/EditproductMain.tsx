@@ -7,12 +7,112 @@ import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
 import { ToastObjects } from "../../utils/constants";
 import {
+  useGetBrandsQuery,
+  useGetCategorysQuery,
   useGetProductsDetailQuery,
   useUpdateProductMutation,
+  useUploadImgMutation,
 } from "../../store/components/products/productsApi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Upload } from "antd";
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+
+const SIZE = 5;
+const sizeMax = SIZE * 1000 * 1000;
 
 const EditProductMain = () => {
+  const [fileList, setFileList] = useState<any>([]);
+  const [uploadImg, { isLoading: isLoadingUpload }] = useUploadImgMutation();
+
+  const uploadImage = async (options: any) => {
+    const { onSuccess, onError, file, onProgress } = options;
+
+    let sizeImg = file ? Number(file?.size) : sizeMax + 1;
+    if (sizeImg <= sizeMax) {
+      let formData = new FormData();
+      const fileName = Date.now() + file.name;
+      formData.append("name", fileName);
+      formData.append("file", file);
+
+      try {
+        const res: any = await uploadImg(formData);
+        let data = res?.data;
+        if (data) {
+          let fileList_temp: any = [];
+          fileList_temp.push({
+            url: data?.url,
+          });
+          setFileList(fileList_temp);
+          setImage(data?.url);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+    }
+  };
+
+  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
+
+  const onPreview = async (file: UploadFile) => {
+    let src = file.url as string;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj as RcFile);
+        reader.onload = () => resolve(reader.result as string);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
+  const [brand, setbrand] = useState<any>("");
+  const [brands, setbrands] = useState<any>([]);
+
+  const {
+    data: brandsdata,
+    error: brandsserror,
+    isSuccess: brandsisSuccess,
+    isLoading: isLoadingbrands,
+  } = useGetBrandsQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+  useEffect(() => {
+    if (brandsisSuccess) {
+      setbrands(brandsdata?.brands);
+    }
+  }, [brandsdata]);
+
+  const [categor, setcategory] = useState<any>("");
+  const [categorys, setcategorys] = useState<any>([]);
+
+  const {
+    data,
+    error: categoryserror,
+    isSuccess: isSuccesscategorys,
+    isLoading: isLoadingcategorys,
+  } = useGetCategorysQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+  useEffect(() => {
+    if (isSuccesscategorys) {
+      setcategorys(data?.categorys);
+    }
+  }, [data]);
+
   const location = useLocation();
   const [productId, setproductId] = useState<any>(
     location.pathname.split("/")[2]
@@ -63,7 +163,6 @@ const EditProductMain = () => {
       toast.success("Product Updated", ToastObjects);
     } else {
       toast.error("Product Update Fail", ToastObjects);
-
     }
   };
 
@@ -76,6 +175,10 @@ const EditProductMain = () => {
       description,
       image,
       countInStock,
+      category: {
+        name: categor,
+        brand: brand,
+      },
     });
   };
 
@@ -84,7 +187,10 @@ const EditProductMain = () => {
     setDescription(product?.description);
     setCountInStock(product?.countInStock);
     setImage(product?.image);
+    setFileList([{ url: product?.image }]);
     setPrice(product?.price);
+    setcategory(product?.category?.name);
+    setbrand(product?.category?.brand);
   }, [product]);
 
   return (
@@ -124,6 +230,33 @@ const EditProductMain = () => {
                     ></Message>
                   ) : (
                     <>
+                      <div className="mb-4">
+                        <div className="flex-box d-flex justify-content-between align-items-center">
+                          <h6>Brand</h6>
+                          <select
+                            value={brand}
+                            onChange={(e) => setbrand(e.target.value)}
+                          >
+                            {brands.map((br: any, index: number) => (
+                              <option key={index} value={br?.brand}>
+                                {br?.brand}
+                              </option>
+                            ))}
+                          </select>
+                          <h6>Category</h6>
+
+                          <select
+                            value={categor}
+                            onChange={(e) => setcategory(e.target.value)}
+                          >
+                            {categorys.map((cate: any, index: number) => (
+                              <option key={index} value={cate?.category}>
+                                {cate?.category}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
                       <div className="mb-4">
                         <label htmlFor="product_title" className="form-label">
                           Product title
@@ -179,13 +312,16 @@ const EditProductMain = () => {
                       </div>
                       <div className="mb-4">
                         <label className="form-label">Images</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          value={image}
-                          required
-                          onChange={(e) => setImage(e.target.value)}
-                        />
+                        <Upload
+                          fileList={fileList}
+                          listType="picture-card"
+                          accept=".png,.jpeg,.gif,.jpg"
+                          onChange={onChange}
+                          onPreview={onPreview}
+                          customRequest={uploadImage}
+                        >
+                          {fileList.length < 1 && "Choose file"}
+                        </Upload>
                       </div>
                     </>
                   )}

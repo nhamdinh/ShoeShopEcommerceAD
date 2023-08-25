@@ -1,4 +1,5 @@
 import AddProduct from "../screens/AddProduct";
+import CategoriesScreen from "../screens/CategoriesScreen";
 import HomeScreen from "../screens/HomeScreen";
 import Login from "../screens/LoginScreen";
 import NotFound from "../screens/NotFound";
@@ -41,10 +42,10 @@ export const PrivateRoutes = [
     path: "/addproduct",
     element: <AddProduct />,
   },
-  // {
-  //   path: "/shipping",
-  //   element: <ShippingScreen />,
-  // },
+  {
+    path: "/category",
+    element: <CategoriesScreen />,
+  },
   // {
   //   path: "/payment",
   //   element: <PaymentScreen />,
