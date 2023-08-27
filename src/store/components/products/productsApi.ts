@@ -23,7 +23,13 @@ export const productsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["GetProducts", "GetProductsDetail", "GetCategorys", "GetBrands"],
+  tagTypes: [
+    "GetProducts",
+    "GetProductsDetail",
+    "GetCategorys",
+    "GetBrands",
+    "GetReviews",
+  ],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: (data) => ({
@@ -112,6 +118,13 @@ export const productsApi = createApi({
         body: data?.formData,
       }),
     }),
+    getReviews: builder.query({
+      query: (data) => ({
+        url: `/products/all-admin/reviews`,
+        method: "GET",
+      }),
+      providesTags: ["GetReviews"],
+    }),
   }),
 });
 
@@ -128,4 +141,5 @@ export const {
   useGetBrandsQuery,
   useDeleteBrandMutation,
   useCreateBrandMutation,
+  useGetReviewsQuery
 } = productsApi;

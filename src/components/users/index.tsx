@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
+import "./style.scss";
 import { Link } from "react-router-dom";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
+import UserRegister from "./UserRegister";
 import { useGetAllMemberQuery } from "../../store/components/auth/authApi";
 import { formatCustomerPhoneNumber } from "../../utils/commonFunction";
 
 const UserComponent = () => {
+  const [tab, settab] = useState<any>(1);
+
   const [userList, setdataFetched] = useState<any>([]);
   const { data, error, isSuccess, isLoading } = useGetAllMemberQuery(
     {},
@@ -24,11 +28,23 @@ const UserComponent = () => {
   return (
     <section className="content-main">
       <div className="content-header">
-        <h2 className="content-title">Customers</h2>
+        <h2
+          onClick={() => {
+            settab(1);
+          }}
+          className="content-title"
+        >
+          Customers
+        </h2>
         <div>
-          <Link to="#" className="btn btn-primary">
+          <div
+            onClick={() => {
+              settab(2);
+            }}
+            className="btn btn-primary"
+          >
             <i className="material-icons md-plus"></i> Create new
-          </Link>
+          </div>
         </div>
       </div>
 
@@ -69,7 +85,7 @@ const UserComponent = () => {
               variant="alert-danger"
               mess={JSON.stringify(error)}
             ></Message>
-          ) : (
+          ) : tab === 1 ? (
             <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
               {userList?.map((user: any) => (
                 <div className="col" key={user?._id}>
@@ -77,7 +93,7 @@ const UserComponent = () => {
                     <div className="card-header">
                       <img
                         className="img-md img-avatar"
-                        src="images/favicon.png"
+                        src="https://w.ladicdn.com/5bf3dc7edc60303c34e4991f/logo-15-20200415164142.png"
                         alt="User pic"
                       />
                     </div>
@@ -89,18 +105,21 @@ const UserComponent = () => {
                         ) : (
                           <p className="m-0">Customer</p>
                         )}
-                        <p className="m-0">{formatCustomerPhoneNumber(user?.phone)}</p>
+                        <p className="m-0">
+                          {formatCustomerPhoneNumber(user?.phone)}
+                        </p>
 
                         <p>
                           <a href={`mailto:${user?.email}`}>{user?.email}</a>
                         </p>
-
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+          ) : (
+            <UserRegister />
           )}
 
           {/* nav */}
