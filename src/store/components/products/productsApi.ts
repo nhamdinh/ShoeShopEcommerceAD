@@ -75,6 +75,14 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["GetCategorys"],
     }),
+    createCategory: builder.mutation({
+      query: (data) => ({
+        url: `/categorys/create`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["GetCategorys"],
+    }),
     getBrands: builder.query({
       query: (data) => ({
         url: `/categorys/all-admin/brand`,
@@ -86,6 +94,14 @@ export const productsApi = createApi({
       query: (data) => ({
         url: `/categorys/delete/${data.brandId}/brand`,
         method: "POST",
+      }),
+      invalidatesTags: ["GetBrands"],
+    }),
+    createBrand: builder.mutation({
+      query: (data) => ({
+        url: `/categorys/create-brand`,
+        method: "POST",
+        body: data,
       }),
       invalidatesTags: ["GetBrands"],
     }),
@@ -107,7 +123,9 @@ export const {
   useCreateProductMutation,
   useGetCategorysQuery,
   useDeleteCategoryMutation,
+  useCreateCategoryMutation,
   useUploadImgMutation,
   useGetBrandsQuery,
   useDeleteBrandMutation,
+  useCreateBrandMutation,
 } = productsApi;

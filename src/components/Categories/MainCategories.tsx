@@ -78,7 +78,11 @@ const MainCategories = () => {
           <div className="card-body">
             <div className="row">
               {/* Create category */}
-              <CreateCategory />
+              <CreateCategory
+                callDelete={(sta: any) => {
+                  setcallDel(sta);
+                }}
+              />
               {/* Categories table */}
               <CategoriesTable
                 callDelete={(sta: any) => {
@@ -100,7 +104,11 @@ const MainCategories = () => {
           <div className="card-body">
             <div className="row">
               {/* Create category */}
-              <CreateBrand />
+              <CreateBrand
+                callDelete={(sta: any) => {
+                  setcallDel(sta);
+                }}
+              />
               {/* Categories table */}
               <BrandsTable
                 callDelete={(sta: any) => {
