@@ -5,6 +5,7 @@ import {
   Middleware,
 } from "@reduxjs/toolkit";
 import dialogReducer from "./components/customDialog/dialogSlice";
+import toastReducer from "./components/customDialog/toastSlice";
 import { productsApi } from "./components/products/productsApi";
 import { ordersApi } from "./components/orders/ordersApi";
 import { authApi } from "./components/auth/authApi";
@@ -32,6 +33,7 @@ const rootReducer = {
   modal: modalReducer,
    */
   dialog: dialogReducer,
+  toastR: toastReducer,
 };
 const rtkQueryErrorLogger: Middleware =
   (api: MiddlewareAPI) => (next) => (action) => {

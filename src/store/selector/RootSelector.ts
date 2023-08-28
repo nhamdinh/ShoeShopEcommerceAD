@@ -19,3 +19,7 @@ export const modalTemplate = (state: any) => state.modal.template;
 export const modalData = (state: any) => state.modal.data;
 export const modalWidth = (state: any) => state.modal.width;
 export const modalHandleAction = (state: any) => state.modal.handleAction;
+// toastDialog
+export const getToastOpen = (state: any) => state.toastR.isOpen;
+export const getToastContent = (state: any) => state.toastR.content;
+export const getToastStep = (state: any) => state.toastR.step;

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useCreateCategoryMutation } from "../../store/components/products/productsApi";
+import { useDispatch } from "react-redux";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
-const CreateCategory = ({ callDelete }: any) => {
+const CreateCategory = () => {
+  const dispatch = useDispatch();
+
   const [category, setName] = useState<any>("");
 
   const [createCategory, { isLoading, error }] = useCreateCategoryMutation();
@@ -12,18 +16,23 @@ const CreateCategory = ({ callDelete }: any) => {
     const data = res?.data;
     console.log(res);
     if (data) {
-      callDelete({
-        call: Date.now(),
-        state: 1,
-        value: "Category",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Create Category Success",
+          step: 1,
+        })
+      );
+
       setName("");
     } else {
-      callDelete({
-        call: Date.now(),
-        state: 2,
-        value: "Category",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Create Category Failed",
+          step: 2,
+        })
+      );
     }
   };
 

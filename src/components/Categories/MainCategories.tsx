@@ -50,20 +50,6 @@ const MainCategories = () => {
       setcategorys(data?.categorys);
     }
   }, [data]);
-  const [callDel, setcallDel] = useState<any>({
-    call: Date.now(),
-    state: 3,
-    value: "",
-  });
-
-  useEffect(() => {
-    if (callDel.state === 1) {
-      toast.success(`${callDel.value} Deleted`, ToastObjects);
-    }
-    if (callDel.state === 2) {
-      toast.error(`Delete ${callDel.value} Failed`, ToastObjects);
-    }
-  }, [callDel]);
 
   return (
     <>
@@ -76,18 +62,9 @@ const MainCategories = () => {
           <div className="card-body">
             <div className="row">
               {/* Create category */}
-              <CreateCategory
-                callDelete={(sta: any) => {
-                  setcallDel(sta);
-                }}
-              />
+              <CreateCategory />
               {/* Categories table */}
-              <CategoriesTable
-                callDelete={(sta: any) => {
-                  setcallDel(sta);
-                }}
-                categorys={categorys}
-              />
+              <CategoriesTable categorys={categorys} />
             </div>
           </div>
         </div>
@@ -102,18 +79,9 @@ const MainCategories = () => {
           <div className="card-body">
             <div className="row">
               {/* Create category */}
-              <CreateBrand
-                callDelete={(sta: any) => {
-                  setcallDel(sta);
-                }}
-              />
+              <CreateBrand />
               {/* Categories table */}
-              <BrandsTable
-                callDelete={(sta: any) => {
-                  setcallDel(sta);
-                }}
-                brands={brands}
-              />
+              <BrandsTable brands={brands} />
             </div>
           </div>
         </div>
