@@ -5,8 +5,11 @@ import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 import { useGetProductsQuery } from "../../store/components/products/productsApi";
 import Product from "./Product";
+import { useTranslation } from "react-i18next";
 
 const MainProducts = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const [products, setdataFetched] = useState<any>([]);
@@ -33,7 +36,7 @@ const MainProducts = () => {
     <>
       <section className="content-main">
         <div className="content-header">
-          <h2 className="content-title">Products</h2>
+          <h2 className="content-title">{t("Products")}</h2>
           <div>
             <Link to="/addproduct" className="btn btn-primary">
               Create new

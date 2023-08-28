@@ -63,7 +63,7 @@ const Login = () => {
         {isError && (
           <Message
             variant="alert-danger"
-            mess="Invalid Email or Password"
+            mess={JSON.stringify(error)}
           ></Message>
         )}
         {isLoading && <Loading />}

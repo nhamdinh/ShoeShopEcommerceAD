@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userLogout } from "../store/components/auth/authSlice";
-
+import { setUserInfo, userLogout } from "../store/components/auth/authSlice";
+import { useTranslation } from "react-i18next";
+import i18n1 from "./../locales/config";
+import { useGetProfileQuery } from "../store/components/auth/authApi";
 var $ = require("jquery");
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     $("[data-trigger]").on("click", function (e: any) {
       e.preventDefault();
@@ -31,9 +35,36 @@ const Header = () => {
     dispatch(userLogout());
   };
 
+  const [userInfo, setdataFetched] = useState<any>({});
+  const { data, error, isSuccess, isLoading } = useGetProfileQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setdataFetched(data);
+      dispatch(setUserInfo({ ...data }));
+    } else {
+    }
+  }, [data]);
+
+  // useEffect(() => {
+  //   if (error?.data?.message === "Not authorized, no token") {
+  //     navigate("/login");
+  //   }
+  // }, [error]);
+
   return (
     <header className="main-header navbar">
       <div className="col-search">
+        <div>
+          {" "}
+          {t("hello")} &ensp; <span className="userInfo">{userInfo?.name}</span>
+        </div>
         {/* <form className="searchform">
           <div className="input-group">
             <input
@@ -72,10 +103,19 @@ const Header = () => {
               <i className="fas fa-bell"></i>
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="#">
-              English
-            </Link>
+          <li style={{ cursor: "pointer" }}>
+            <div
+              onClick={() => {
+                if (i18n1?.language === "vi") {
+                  i18n.changeLanguage("en");
+                } else {
+                  i18n.changeLanguage("vi");
+                }
+              }}
+              className="nav-link"
+            >
+              {i18n1?.language === "vi" ? "English" : "Vietnamese"}
+            </div>
           </li>
           <li className="dropdown nav-item">
             <Link className="dropdown-toggle" data-bs-toggle="dropdown" to="#">
@@ -86,19 +126,18 @@ const Header = () => {
               />
             </Link>
             <div className="dropdown-menu dropdown-menu-end">
-              <Link className="dropdown-item" to="/">
+              {/* <Link className="dropdown-item" to="/">
                 My profile
               </Link>
               <Link className="dropdown-item" to="#">
                 Settings
-              </Link>
-              <Link
+              </Link> */}
+              <div
                 onClick={logoutHandler}
                 className="dropdown-item text-danger"
-                to="#"
               >
                 Exit
-              </Link>
+              </div>
             </div>
           </li>
         </ul>
