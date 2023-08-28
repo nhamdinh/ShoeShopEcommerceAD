@@ -4,8 +4,11 @@ import LatestOrder from "./LatestOrder";
 import SaleStatistics from "./SalesStatistics";
 import ProductsStatistics from "./ProductsStatistics";
 import { useGetOrderAdQuery } from "../../store/components/orders/ordersApi";
+import { useTranslation } from "react-i18next";
 
 const Main = () => {
+  const { t } = useTranslation();
+
   const [orders, setorders] = useState<any>([]);
 
   const {
@@ -31,7 +34,7 @@ const Main = () => {
     <>
       <section className="content-main">
         <div className="content-header">
-          <h2 className="content-title"> Dashboard </h2>
+          <h2 className="content-title">{t("Dashboard")}</h2>
         </div>
         {/* Top Total */}
         <TopTotal orders={orders} />

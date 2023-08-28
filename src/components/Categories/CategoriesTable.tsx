@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { useDeleteCategoryMutation } from "../../store/components/products/productsApi";
 import { useDispatch } from "react-redux";
 import { openDialog } from "../../store/components/customDialog/dialogSlice";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
-const CategoriesTable = ({ categorys, callDelete }: any) => {
+const CategoriesTable = ({ categorys }: any) => {
   const dispatch = useDispatch();
 
   const [deleteCategory, { isLoading, error }] = useDeleteCategoryMutation();
@@ -14,17 +15,21 @@ const CategoriesTable = ({ categorys, callDelete }: any) => {
     const data = res?.data;
 
     if (data) {
-      callDelete({
-        call: Date.now(),
-        state: 1,
-        value: "Category",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Delete Category Success",
+          step: 1,
+        })
+      );
     } else {
-      callDelete({
-        call: Date.now(),
-        state: 2,
-        value: "Category",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Delete Category Failed",
+          step: 2,
+        })
+      );
     }
   };
 
@@ -72,7 +77,7 @@ const CategoriesTable = ({ categorys, callDelete }: any) => {
                     />
                   </div>
                 </td>
-                <td>{index+1}</td>
+                <td>{index + 1}</td>
                 <td>
                   <b>{cate?.category}</b>
                 </td>

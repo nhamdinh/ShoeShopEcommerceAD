@@ -1,7 +1,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <aside className="navbar-aside" id="offcanvas_aside">
@@ -31,7 +34,7 @@ const Sidebar = () => {
                 // exact={true}
               >
                 <i className="icon fas fa-home"></i>
-                <span className="text">Dashboard</span>
+                <span className="text">{t("Dashboard")}</span>
               </NavLink>
             </li>
             <li className="menu-item">
@@ -41,7 +44,7 @@ const Sidebar = () => {
                 to="/products"
               >
                 <i className="icon fas fa-shopping-bag"></i>
-                <span className="text">Products</span>
+                <span className="text">{t("Products")}</span>
               </NavLink>
             </li>
             <li className="menu-item">

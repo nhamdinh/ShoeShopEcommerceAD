@@ -26,7 +26,7 @@ const App = () => {
         />
       </Routes>
       <CustomDialog />
-      <Toast></Toast>
+      <Toast />
 
       {/* <Footer /> */}
     </div>

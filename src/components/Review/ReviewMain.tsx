@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
-import { useGetReviewsQuery } from "../../store/components/products/productsApi";
+import { useGetProductsQuery } from "../../store/components/products/productsApi";
 import Reviews from "./Reviews";
 
 export default function ReviewMain() {
   const [reviews, setreviews] = useState<any>([]);
-
   const {
     data: dataFetch,
     error,
     isSuccess,
     isLoading,
-  } = useGetReviewsQuery(
+  } = useGetProductsQuery(
     {},
     {
       refetchOnMountOrArgChange: true,
@@ -21,14 +20,20 @@ export default function ReviewMain() {
   );
   useEffect(() => {
     if (isSuccess) {
-      setreviews(dataFetch);
+      let reviews: any = [];
+      dataFetch?.map((product: any) => {
+        product?.reviews?.map((rew: any) => {
+          reviews.push({ ...rew, productId: product?._id });
+        });
+      });
+      setreviews(reviews);
     }
   }, [dataFetch]);
 
   return (
     <section className="content-main">
       <div className="content-header">
-        <h2 className="content-title">Orders</h2>
+        <h2 className="content-title">Reviews</h2>
       </div>
 
       <div className="card mb-4 shadow-sm">

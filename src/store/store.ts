@@ -5,6 +5,7 @@ import {
   Middleware,
 } from "@reduxjs/toolkit";
 import dialogReducer from "./components/customDialog/dialogSlice";
+import toastReducer from "./components/customDialog/toastSlice";
 import { productsApi } from "./components/products/productsApi";
 import { ordersApi } from "./components/orders/ordersApi";
 import { authApi } from "./components/auth/authApi";
@@ -32,6 +33,7 @@ const rootReducer = {
   modal: modalReducer,
    */
   dialog: dialogReducer,
+  toastR: toastReducer,
 };
 const rtkQueryErrorLogger: Middleware =
   (api: MiddlewareAPI) => (next) => (action) => {
@@ -39,8 +41,9 @@ const rtkQueryErrorLogger: Middleware =
       /*       console.log("rtkQueryErrorLogger", action);
        */ // unauthorized
       if (action.payload.status === 401) {
-        /*       api.dispatch(userLogout());
-        window.location.href = "/login"; */
+        console.log("rtkQueryErrorLogger");
+        api.dispatch(userLogout());
+        window.location.href = "/login";
       }
     }
     return next(action);

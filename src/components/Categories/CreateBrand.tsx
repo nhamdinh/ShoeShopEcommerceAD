@@ -6,10 +6,14 @@ import {
   useUploadImgMutation,
 } from "../../store/components/products/productsApi";
 import { FOLDER_CATEGORYS_STORAGE } from "../../utils/constants";
+import { useDispatch } from "react-redux";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
 const SIZE = 5;
 const sizeMax = SIZE * 1000 * 1000;
-const CreateBrand = ({ callDelete }: any) => {
+const CreateBrand = () => {
+  const dispatch = useDispatch();
+
   const [image, setImage] = useState<any>("");
   const [fileList, setFileList] = useState<any>([]);
   const [uploadImg, { isLoading: isLoadingUpload }] = useUploadImgMutation();
@@ -74,20 +78,24 @@ const CreateBrand = ({ callDelete }: any) => {
     const data = res?.data;
     console.log(res);
     if (data) {
-      callDelete({
-        call: Date.now(),
-        state: 1,
-        value: "Brand",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Create Brand Success",
+          step: 1,
+        })
+      );
       setName("");
       setImage("");
       setFileList([]);
     } else {
-      callDelete({
-        call: Date.now(),
-        state: 2,
-        value: "Brand",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Create Brand Failed",
+          step: 2,
+        })
+      );
     }
   };
 

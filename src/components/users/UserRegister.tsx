@@ -5,8 +5,12 @@ import { formatPhone } from "../../utils/commonFunction";
 import Loading from "../LoadingError/Loading";
 import { useRegisterMutation } from "../../store/components/auth/authApi";
 import { Radio } from "antd";
+import { useDispatch } from "react-redux";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
 export default function UserRegister() {
+  const dispatch = useDispatch();
+
   window.scrollTo(0, 0);
   const [name, setName] = useState<any>("");
   const [email, setEmail] = useState<any>("");
@@ -26,8 +30,22 @@ export default function UserRegister() {
     if (data) {
       // localStorage.setItem(ACCESSTOKEN_STORAGE, data.token);
       // localStorage.setItem(NAME_STORAGE, data.name);
-    //   navigate("/");
+      //   navigate("/");
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Added User Admin Success",
+          step: 1,
+        })
+      );
     } else {
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Add User Admin Failed",
+          step: 2,
+        })
+      );
       setisError(true);
     }
   };

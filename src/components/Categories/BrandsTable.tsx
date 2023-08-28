@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openDialog } from "../../store/components/customDialog/dialogSlice";
 import { useDeleteBrandMutation } from "../../store/components/products/productsApi";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
-const BrandsTable = ({ brands, callDelete }: any) => {
+const BrandsTable = ({ brands }: any) => {
   const dispatch = useDispatch();
 
   const [deleteBrand, { isLoading, error }] = useDeleteBrandMutation();
@@ -15,17 +16,21 @@ const BrandsTable = ({ brands, callDelete }: any) => {
     const data = res?.data;
 
     if (data) {
-      callDelete({
-        call: Date.now(),
-        state: 1,
-        value: "Brand",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Deleted Brand Success",
+          step: 1,
+        })
+      );
     } else {
-      callDelete({
-        call: Date.now(),
-        state: 2,
-        value: "Brand",
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Delete Brand Failed",
+          step: 2,
+        })
+      );
     }
   };
 
@@ -78,7 +83,13 @@ const BrandsTable = ({ brands, callDelete }: any) => {
                 <td>
                   <b>{bra?.brand}</b>
                 </td>
-                <td><img className="image__bra" src={bra?.image} alt="image__bra" /></td>
+                <td>
+                  <img
+                    className="image__bra"
+                    src={bra?.image}
+                    alt="image__bra"
+                  />
+                </td>
                 <td className="text-end">
                   <div className="dropdown">
                     <Link

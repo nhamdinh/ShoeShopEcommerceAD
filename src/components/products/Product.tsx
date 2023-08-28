@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { openDialog } from "../../store/components/customDialog/dialogSlice";
 import { useDeleteProductMutation } from "../../store/components/products/productsApi";
 import Loading from "../LoadingError/Loading";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
-const Product = ({ product, callDelete }: any) => {
+const Product = ({ product }: any) => {
   const dispatch = useDispatch();
   const [deleteProduct, { isLoading, error }] = useDeleteProductMutation();
   const onDeleteProduct = async (values: any) => {
@@ -13,15 +14,21 @@ const Product = ({ product, callDelete }: any) => {
     const data = res?.data;
 
     if (data) {
-      callDelete({
-        call: Date.now(),
-        state: 1,
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Deleted Product Success",
+          step: 1,
+        })
+      );
     } else {
-      callDelete({
-        call: Date.now(),
-        state: 2,
-      });
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Delete Product Failed",
+          step: 2,
+        })
+      );
     }
   };
 
@@ -48,7 +55,9 @@ const Product = ({ product, callDelete }: any) => {
             <img src={product?.image} alt="Product" />
           </Link>
           <div className="info-wrap">
-            <div className="title text-truncate colorred">Type: {product?.category?.brand +" / "+product?.category?.name}</div>
+            <div className="title text-truncate colorred">
+              Type: {product?.category?.brand + " / " + product?.category?.name}
+            </div>
             <div className="title text-truncate">{product?.name}</div>
             <div className="price mb-2">${product?.price}</div>
             <div className="row">

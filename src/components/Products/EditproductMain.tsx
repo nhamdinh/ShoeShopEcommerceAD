@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Toast from "../LoadingError/Toast";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
-import { FOLDER_PRODUCS_STORAGE, ToastObjects } from "../../utils/constants";
+import { FOLDER_PRODUCS_STORAGE } from "../../utils/constants";
 import {
   useGetBrandsQuery,
   useGetCategorysQuery,
@@ -16,11 +14,14 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { Upload } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
 const SIZE = 5;
 const sizeMax = SIZE * 1000 * 1000;
 
 const EditProductMain = () => {
+  const dispatch = useDispatch();
+
   const [fileList, setFileList] = useState<any>([]);
   const [uploadImg, { isLoading: isLoadingUpload }] = useUploadImgMutation();
 
@@ -163,9 +164,21 @@ const EditProductMain = () => {
     const data = res?.data;
 
     if (data) {
-      toast.success("Product Updated", ToastObjects);
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Updated Product Success",
+          step: 1,
+        })
+      );
     } else {
-      toast.error("Product Update Fail", ToastObjects);
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Update Product Failed",
+          step: 2,
+        })
+      );
     }
   };
 
@@ -198,7 +211,6 @@ const EditProductMain = () => {
 
   return (
     <>
-      <Toast />
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={submitHandler}>
           <div className="content-header">

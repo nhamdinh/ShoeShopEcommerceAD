@@ -1,11 +1,10 @@
 import "./style.scss";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import Toast from "../LoadingError/Toast";
+
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
-import { FOLDER_PRODUCS_STORAGE, ToastObjects } from "../../utils/constants";
+import { FOLDER_PRODUCS_STORAGE } from "../../utils/constants";
 import {
   useCreateProductMutation,
   useGetBrandsQuery,
@@ -14,11 +13,15 @@ import {
 } from "../../store/components/products/productsApi";
 import { Upload } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import { useDispatch } from "react-redux";
+import { openToast } from "../../store/components/customDialog/toastSlice";
 
 const SIZE = 5;
 const sizeMax = SIZE * 1000 * 1000;
 
 const AddProductMain = () => {
+  const dispatch = useDispatch();
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploadImg, { isLoading: isLoadingUpload }] = useUploadImgMutation();
 
@@ -130,7 +133,14 @@ const AddProductMain = () => {
     const data = res?.data;
 
     if (data) {
-      toast.success("Product Added", ToastObjects);
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Added Product Success",
+          step: 1,
+        })
+      );
+
       setName("");
       setDescription("");
       setCountInStock(0);
@@ -138,7 +148,13 @@ const AddProductMain = () => {
       setPrice(0);
       setFileList([]);
     } else {
-      toast.error("Product Add Fail", ToastObjects);
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "Add Product Failed",
+          step: 2,
+        })
+      );
     }
   };
 
@@ -160,7 +176,6 @@ const AddProductMain = () => {
 
   return (
     <>
-      <Toast />
       <section className="content-main" style={{ maxWidth: "1200px" }}>
         <form onSubmit={submitHandler}>
           <div className="content-header">
