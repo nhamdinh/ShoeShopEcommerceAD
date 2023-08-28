@@ -4,18 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 import { useGetProductsQuery } from "../../store/components/products/productsApi";
-import Toast from "../LoadingError/Toast";
-import { toast } from "react-toastify";
-import { ToastObjects } from "../../utils/constants";
 import Product from "./Product";
 
 const MainProducts = () => {
   const dispatch = useDispatch();
-
-  const [callDel, setcallDel] = useState<any>({
-    call: Date.now(),
-    state: 3,
-  });
 
   const [products, setdataFetched] = useState<any>([]);
   const { data, error, isSuccess, isLoading } = useGetProductsQuery(
@@ -37,18 +29,8 @@ const MainProducts = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (callDel.state === 1) {
-      toast.success("Product Deleted", ToastObjects);
-    }
-    if (callDel.state === 2) {
-      toast.error("Delete Product Failed ", ToastObjects);
-    }
-  }, [callDel]);
-
   return (
     <>
-      <Toast />
       <section className="content-main">
         <div className="content-header">
           <h2 className="content-title">Products</h2>
@@ -99,13 +81,7 @@ const MainProducts = () => {
               <div className="row">
                 {/* Products */}
                 {products?.map((product: any) => (
-                  <Product
-                    product={product}
-                    key={product._id}
-                    callDelete={(sta: any) => {
-                      setcallDel(sta);
-                    }}
-                  />
+                  <Product product={product} key={product._id} />
                 ))}
               </div>
             )}

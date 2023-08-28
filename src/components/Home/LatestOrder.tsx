@@ -34,6 +34,14 @@ const LatestOrder = ({ orders, isLoading, error }: any) => {
                     )}
                   </td>
                   <td>{moment(order?.createdAt).calendar()}</td>
+
+                  <td>
+                    {order?.isDelivered ? (
+                      <span className="badge btn-success">Delivered</span>
+                    ) : (
+                      <span className="badge btn-dark">Not delivered</span>
+                    )}
+                  </td>
                   <td className="d-flex justify-content-end align-item-center">
                     <Link to={`/order/${order?._id}`} className="text-success">
                       <i className="fas fa-eye"></i>
