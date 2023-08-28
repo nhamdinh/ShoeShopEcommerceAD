@@ -6,8 +6,6 @@ import Reviews from "./Reviews";
 
 export default function ReviewMain() {
   const [reviews, setreviews] = useState<any>([]);
-  console.log(reviews);
-
   const {
     data: dataFetch,
     error,

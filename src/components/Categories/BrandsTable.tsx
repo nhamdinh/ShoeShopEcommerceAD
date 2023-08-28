@@ -19,7 +19,7 @@ const BrandsTable = ({ brands }: any) => {
       dispatch(
         openToast({
           isOpen: Date.now(),
-          content: "Delete Brand Success",
+          content: "Deleted Brand Success",
           step: 1,
         })
       );

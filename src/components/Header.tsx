@@ -5,6 +5,7 @@ import { setUserInfo, userLogout } from "../store/components/auth/authSlice";
 import { useTranslation } from "react-i18next";
 import i18n1 from "./../locales/config";
 import { useGetProfileQuery } from "../store/components/auth/authApi";
+import { LANG_STORAGE } from "../utils/constants";
 var $ = require("jquery");
 
 const Header = () => {
@@ -51,6 +52,15 @@ const Header = () => {
     } else {
     }
   }, [data]);
+
+  useEffect(() => {
+    const lang = localStorage.getItem(LANG_STORAGE);
+    if (lang) {
+      i18n.changeLanguage(lang);
+    } else {
+      i18n.changeLanguage("en");
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (error?.data?.message === "Not authorized, no token") {
@@ -108,8 +118,10 @@ const Header = () => {
               onClick={() => {
                 if (i18n1?.language === "vi") {
                   i18n.changeLanguage("en");
+                  localStorage.setItem(LANG_STORAGE, "en");
                 } else {
                   i18n.changeLanguage("vi");
+                  localStorage.setItem(LANG_STORAGE, "vi");
                 }
               }}
               className="nav-link"

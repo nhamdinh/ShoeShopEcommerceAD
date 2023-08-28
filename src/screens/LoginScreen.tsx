@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/LoadingError/Loading";
 import Message from "../components/LoadingError/Error";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ACCESSTOKEN_STORAGE, NAME_STORAGE } from "../utils/constants";
+import { ACCESSTOKEN_STORAGE, LANG_STORAGE, NAME_STORAGE } from "../utils/constants";
 import { useLoginMutation } from "../store/components/auth/authApi";
 import { openToast } from "../store/components/customDialog/toastSlice";
 
@@ -28,6 +28,7 @@ const Login = () => {
       if (data.isAdmin) {
         localStorage.setItem(ACCESSTOKEN_STORAGE, data.token);
         localStorage.setItem(NAME_STORAGE, data.name);
+        localStorage.setItem(LANG_STORAGE, "en");
         dispatch(
           openToast({
             isOpen: Date.now(),
