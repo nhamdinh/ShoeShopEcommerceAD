@@ -1,3 +1,4 @@
+import "./style.scss";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -77,7 +78,7 @@ const BrandsTable = ({ brands, callDelete }: any) => {
                 <td>
                   <b>{bra?.brand}</b>
                 </td>
-                <td>img</td>
+                <td><img className="image__bra" src={bra?.image} alt="image__bra" /></td>
                 <td className="text-end">
                   <div className="dropdown">
                     <Link

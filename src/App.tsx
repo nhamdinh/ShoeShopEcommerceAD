@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { PrivateRoutes } from "./routers";
 import CustomDialog from "./components/customDialog";
+import Toast from "./components/LoadingError/Toast";
 
 const App = () => {
   console.log("env:", process.env.REACT_PUBLIC_ENV);
@@ -25,6 +26,7 @@ const App = () => {
         />
       </Routes>
       <CustomDialog />
+      <Toast></Toast>
 
       {/* <Footer /> */}
     </div>

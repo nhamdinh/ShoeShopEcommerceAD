@@ -7,7 +7,6 @@ import {
   useGetBrandsQuery,
   useGetCategorysQuery,
 } from "../../store/components/products/productsApi";
-import Toast from "../LoadingError/Toast";
 import { toast } from "react-toastify";
 import { ToastObjects } from "../../utils/constants";
 
@@ -68,7 +67,6 @@ const MainCategories = () => {
 
   return (
     <>
-      <Toast></Toast>
       <section className="content-main">
         <div className="content-header">
           <h2 className="content-title">Categories</h2>
@@ -78,7 +76,11 @@ const MainCategories = () => {
           <div className="card-body">
             <div className="row">
               {/* Create category */}
-              <CreateCategory />
+              <CreateCategory
+                callDelete={(sta: any) => {
+                  setcallDel(sta);
+                }}
+              />
               {/* Categories table */}
               <CategoriesTable
                 callDelete={(sta: any) => {
@@ -100,7 +102,11 @@ const MainCategories = () => {
           <div className="card-body">
             <div className="row">
               {/* Create category */}
-              <CreateBrand />
+              <CreateBrand
+                callDelete={(sta: any) => {
+                  setcallDel(sta);
+                }}
+              />
               {/* Categories table */}
               <BrandsTable
                 callDelete={(sta: any) => {

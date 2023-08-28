@@ -61,3 +61,7 @@ export const formatCustomerPhoneNumber = (value: string) => {
   //KOC 516
   return `${value.slice(0, 4)}-${value.slice(4, 7)}-${value.slice(7)}`;
 };
+
+export const formatPhone = (val: string) => {
+  return val.replace(" ", "").replace(/[^0-9 ]+/g, "");
+};

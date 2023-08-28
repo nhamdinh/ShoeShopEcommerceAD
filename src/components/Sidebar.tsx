@@ -8,7 +8,7 @@ const Sidebar = () => {
         <div className="aside-top">
           <Link to="/" className="brand-wrap">
             <img
-              src="/images/logo.png"
+              src="https://w.ladicdn.com/5bf3dc7edc60303c34e4991f/logo-02-20200903083638.svg"
               style={{ height: "46" }}
               className="logo"
               alt="Ecommerce dashboard template"
@@ -82,6 +82,17 @@ const Sidebar = () => {
               >
                 <i className="icon fas fa-user"></i>
                 <span className="text">Users</span>
+              </NavLink>
+            </li>
+
+            <li className="menu-item">
+              <NavLink
+                // activeClassName="active"
+                className="menu-link"
+                to="/reviews"
+              >
+                <i className="icon fas fa-user"></i>
+                <span className="text">Reviews</span>
               </NavLink>
             </li>
             <li className="menu-item">

@@ -7,6 +7,7 @@ import OrderDetailScreen from "../screens/OrderDetailScreen";
 import OrderScreen from "../screens/OrderScreen";
 import ProductEditScreen from "../screens/ProductEditScreen";
 import ProductScreen from "../screens/ProductScreen";
+import ReviewScreen from "../screens/ReviewScreen";
 import UsersScreen from "../screens/UsersScreen";
 
 export const PrivateRoutes = [
@@ -46,10 +47,10 @@ export const PrivateRoutes = [
     path: "/category",
     element: <CategoriesScreen />,
   },
-  // {
-  //   path: "/payment",
-  //   element: <PaymentScreen />,
-  // },
+  {
+    path: "/reviews",
+    element: <ReviewScreen />,
+  },
   // {
   //   path: "/placeorder",
   //   element: <PlaceOrderScreen />,

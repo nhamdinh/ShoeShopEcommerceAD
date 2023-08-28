@@ -23,7 +23,13 @@ export const productsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["GetProducts", "GetProductsDetail", "GetCategorys", "GetBrands"],
+  tagTypes: [
+    "GetProducts",
+    "GetProductsDetail",
+    "GetCategorys",
+    "GetBrands",
+    "GetReviews",
+  ],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: (data) => ({
@@ -75,6 +81,14 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["GetCategorys"],
     }),
+    createCategory: builder.mutation({
+      query: (data) => ({
+        url: `/categorys/create`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["GetCategorys"],
+    }),
     getBrands: builder.query({
       query: (data) => ({
         url: `/categorys/all-admin/brand`,
@@ -89,12 +103,27 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["GetBrands"],
     }),
+    createBrand: builder.mutation({
+      query: (data) => ({
+        url: `/categorys/create-brand`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["GetBrands"],
+    }),
     uploadImg: builder.mutation({
       query: (data) => ({
         url: `/upload?folder=${data?.folder}`,
         method: "POST",
         body: data?.formData,
       }),
+    }),
+    getReviews: builder.query({
+      query: (data) => ({
+        url: `/products/all-admin/reviews`,
+        method: "GET",
+      }),
+      providesTags: ["GetReviews"],
     }),
   }),
 });
@@ -107,7 +136,10 @@ export const {
   useCreateProductMutation,
   useGetCategorysQuery,
   useDeleteCategoryMutation,
+  useCreateCategoryMutation,
   useUploadImgMutation,
   useGetBrandsQuery,
   useDeleteBrandMutation,
+  useCreateBrandMutation,
+  useGetReviewsQuery
 } = productsApi;
