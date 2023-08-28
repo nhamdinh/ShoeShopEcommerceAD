@@ -125,6 +125,13 @@ export const productsApi = createApi({
       }),
       providesTags: ["GetReviews"],
     }),
+    updateReview: builder.mutation({
+      query: (data) => ({
+        url: `/products/${data.reviewId}/update-review`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -141,5 +148,6 @@ export const {
   useGetBrandsQuery,
   useDeleteBrandMutation,
   useCreateBrandMutation,
-  useGetReviewsQuery
+  useGetReviewsQuery,
+  useUpdateReviewMutation,
 } = productsApi;

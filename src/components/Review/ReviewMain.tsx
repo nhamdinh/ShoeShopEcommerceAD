@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
-import { useGetReviewsQuery } from "../../store/components/products/productsApi";
+import { useGetProductsQuery } from "../../store/components/products/productsApi";
 import Reviews from "./Reviews";
 
 export default function ReviewMain() {
   const [reviews, setreviews] = useState<any>([]);
+  console.log(reviews);
 
   const {
     data: dataFetch,
     error,
     isSuccess,
     isLoading,
-  } = useGetReviewsQuery(
+  } = useGetProductsQuery(
     {},
     {
       refetchOnMountOrArgChange: true,
@@ -21,7 +22,13 @@ export default function ReviewMain() {
   );
   useEffect(() => {
     if (isSuccess) {
-      setreviews(dataFetch);
+      let reviews: any = [];
+      dataFetch?.map((product: any) => {
+        product?.reviews?.map((rew: any) => {
+          reviews.push({ ...rew, productId: product?._id });
+        });
+      });
+      setreviews(reviews);
     }
   }, [dataFetch]);
 
