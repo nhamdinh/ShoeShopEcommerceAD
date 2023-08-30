@@ -12,7 +12,10 @@ export default function ReviewMain() {
     isSuccess,
     isLoading,
   } = useGetProductsQuery(
-    {},
+    {
+      page: 1,
+      limit: 1000,
+    },
     {
       refetchOnMountOrArgChange: true,
       skip: false,
@@ -21,7 +24,7 @@ export default function ReviewMain() {
   useEffect(() => {
     if (isSuccess) {
       let reviews: any = [];
-      dataFetch?.map((product: any) => {
+      dataFetch?.products?.map((product: any) => {
         product?.reviews?.map((rew: any) => {
           reviews.push({ ...rew, productId: product?._id });
         });
