@@ -7,8 +7,6 @@ import {
   useGetBrandsQuery,
   useGetCategorysQuery,
 } from "../../store/components/products/productsApi";
-import { toast } from "react-toastify";
-import { ToastObjects } from "../../utils/constants";
 
 const MainCategories = () => {
   const [brands, setbrands] = useState<any>([]);
