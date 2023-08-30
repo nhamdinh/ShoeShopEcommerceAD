@@ -5,6 +5,8 @@ export const ACCESSTOKEN_STORAGE = "accessToken";
 export const LANG_STORAGE = "lang";
 export const FOLDER_CATEGORYS_STORAGE = "categorys";
 export const FOLDER_PRODUCS_STORAGE = "products";
+export const PAGE_SIZE = 8;
+
 export const ToastObjects = {
   pauseOnFocusLoss: false,
   draggable: false,

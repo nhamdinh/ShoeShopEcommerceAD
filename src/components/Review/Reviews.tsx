@@ -30,7 +30,6 @@ const Reviews = ({ reviews }: any) => {
   );
 };
 function CompTableReviews({ rev }: any) {
-  console.log(rev);
   const [value, setValue] = useState<any>(rev?.comment);
 
   const dispatch = useDispatch();

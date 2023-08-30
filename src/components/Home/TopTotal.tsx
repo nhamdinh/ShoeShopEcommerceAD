@@ -10,10 +10,7 @@ const TopTotal = ({ orders }: any) => {
   const { data, error, isSuccess, isLoading } = useGetProductsQuery(
     {
       page: 1,
-      limit: 100,
-      order: "desc",
-      orderBy: "createdAt",
-      keyword: "",
+      limit: 1000,
     },
     {
       refetchOnMountOrArgChange: true,
@@ -22,7 +19,7 @@ const TopTotal = ({ orders }: any) => {
   );
   useEffect(() => {
     if (isSuccess) {
-      setdataFetched(data);
+      setdataFetched(data?.products);
     }
   }, [data]);
 

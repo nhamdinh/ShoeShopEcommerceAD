@@ -33,8 +33,9 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: (data) => ({
-        url: `/products/all-admin?keyword=${data?.keyword}`,
+        url: `/products/all-admin`,
         method: "GET",
+        params: data,
       }),
       providesTags: ["GetProducts"],
     }),
