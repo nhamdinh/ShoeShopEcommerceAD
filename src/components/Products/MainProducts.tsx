@@ -93,7 +93,7 @@ const MainProducts = () => {
 
   const submitHandler = (value: any, bra: any) => {
     setKeyword(value);
-    if (value.trim() || bra) {
+    if (value.trim() || bra !== "All category") {
       setParams({ ...params, brand: bra === "All category" ? "All" : bra });
       navigate(`/products?search=${value.trim()}&&brand=${bra}`);
     } else {
@@ -105,7 +105,18 @@ const MainProducts = () => {
     <>
       <section className="content-main">
         <div className="content-header">
-          <h2 className="content-title">{t("Products")}</h2>
+          <h2
+            className="content-title"
+            onClick={() => {
+              setParams({ ...params, brand: "", keyword: "" });
+              setbrand("All category");
+              setKeyword("")
+              setValue("")
+              navigate("/products");
+            }}
+          >
+            {t("Products")}
+          </h2>
           <div>
             <Link to="/addproduct" className="btn btn-primary">
               Create new
@@ -128,14 +139,14 @@ const MainProducts = () => {
                     }}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") {
-                        submitHandler(value, "");
+                        submitHandler(value, brand);
                       }
                     }}
                   />
                   <button
                     type="submit"
                     onClick={() => {
-                      submitHandler(value, "");
+                      submitHandler(value, brand);
                     }}
                     className="search-button"
                   >
