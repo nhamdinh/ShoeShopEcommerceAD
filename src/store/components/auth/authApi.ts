@@ -60,6 +60,7 @@ export const authApi = createApi({
       query: (data) => ({
         url: `/users/all-admin`,
         method: "GET",
+        params: data,
       }),
       providesTags: ["getAllMember__TAG"],
     }),

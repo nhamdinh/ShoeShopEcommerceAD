@@ -8,6 +8,7 @@ const Orders = ({ orders }: any) => {
     <table className="table">
       <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Phone</th>
@@ -21,8 +22,10 @@ const Orders = ({ orders }: any) => {
         </tr>
       </thead>
       <tbody>
-        {orders?.map((order: any) => (
+        {orders?.map((order: any, index: number) => (
           <tr key={order?._id}>
+            <td>{index + 1}</td>
+
             <td>
               <b>{order?.user?.name}</b>
             </td>

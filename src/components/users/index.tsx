@@ -7,15 +7,45 @@ import ChatBox from "../ChatBox";
 import { useSelector } from "react-redux";
 import { getChatNotices, getUserInfo } from "../../store/selector/RootSelector";
 import { useDispatch } from "react-redux";
-import { useClearCountChatMutation } from "../../store/components/auth/authApi";
+import {
+  useClearCountChatMutation,
+  useGetAllMemberQuery,
+} from "../../store/components/auth/authApi";
+import Loading from "../LoadingError/Loading";
+import Message from "../LoadingError/Error";
 
 const UserComponent = () => {
   const [tab, settab] = useState<any>(1);
   const userInfo = useSelector(getUserInfo);
   const chatNotices = useSelector(getChatNotices);
   const [userList, setdataFetched] = useState<any>([]);
+
+  const [searchBy, setsearchBy] = useState<any>("email");
+  const [keyword, setkeyword] = useState<any>("");
+
+  const [params, setParams] = useState<any>({
+    searchBy,
+    keyword,
+  });
+  const {
+    data,
+    error,
+    isSuccess,
+    isLoading,
+    refetch: refetchAllMember,
+  } = useGetAllMemberQuery(params, {
+    refetchOnMountOrArgChange: true,
+    skip: false,
+  });
+
   useEffect(() => {
-    setdataFetched(chatNotices);
+    if (isSuccess) {
+      setdataFetched(data?.users);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetchAllMember();
   }, [chatNotices]);
 
   return (
@@ -45,11 +75,38 @@ const UserComponent = () => {
         <header className="card-header">
           <div className="row gx-3">
             <div className="col-lg-4 col-md-6 me-auto">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="form-control"
-              />
+              <div className="df">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="form-control"
+                  value={keyword}
+                  onChange={(e) => setkeyword(e.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      setParams({ searchBy, keyword: keyword.trim() });
+                    }
+                  }}
+                />
+
+                <select
+                  className="select__user"
+                  value={searchBy}
+                  onChange={(e) => setsearchBy(e.target.value)}
+                >
+                  <option value={"email"}>{"email"}</option>
+                  <option value={"phone"}>{"phone"}</option>
+                </select>
+                <button
+                  type="submit"
+                  onClick={() => {
+                    setParams({ searchBy, keyword: keyword.trim() });
+                  }}
+                  className="search-button"
+                >
+                  search
+                </button>
+              </div>
             </div>
             <div className="col-lg-2 col-6 col-md-3">
               <select className="form-select">
@@ -71,7 +128,14 @@ const UserComponent = () => {
 
         {/* Card */}
         <div className="card-body">
-          {tab === 1 ? (
+          {isLoading ? (
+            <Loading />
+          ) : error ? (
+            <Message
+              variant="alert-danger"
+              mess={JSON.stringify(error)}
+            ></Message>
+          ) : tab === 1 ? (
             <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
               {userList?.map((user: any) => {
                 if (userInfo?.email !== user?.email)

@@ -35,7 +35,6 @@ const App = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // setdataFetched(data?.users);
       dispatch(setStoChatNotices(data?.users));
     }
   }, [data]);

@@ -7,18 +7,23 @@ import { useGetOrderAdQuery } from "../../store/components/orders/ordersApi";
 const OrderMain = () => {
   const [orders, setorders] = useState<any>([]);
 
+  const [searchBy, setsearchBy] = useState<any>("email");
+  const [keyword, setkeyword] = useState<any>("");
+
+  const [params, setParams] = useState<any>({
+    searchBy,
+    keyword,
+  });
+
   const {
     data: dataFetch,
     error,
     isSuccess,
     isLoading,
-  } = useGetOrderAdQuery(
-    {},
-    {
-      refetchOnMountOrArgChange: true,
-      skip: false,
-    }
-  );
+  } = useGetOrderAdQuery(params, {
+    refetchOnMountOrArgChange: true,
+    skip: false,
+  });
   useEffect(() => {
     if (isSuccess) {
       setorders(dataFetch);
@@ -35,11 +40,38 @@ const OrderMain = () => {
         <header className="card-header bg-white">
           <div className="row gx-3 py-3">
             <div className="col-lg-4 col-md-6 me-auto">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="form-control p-2"
-              />
+              <div className="df">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="form-control"
+                  value={keyword}
+                  onChange={(e) => setkeyword(e.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      setParams({ searchBy, keyword: keyword.trim() });
+                    }
+                  }}
+                />
+
+                <select
+                  className="select__user"
+                  value={searchBy}
+                  onChange={(e) => setsearchBy(e.target.value)}
+                >
+                  <option value={"email"}>{"email"}</option>
+                  <option value={"phone"}>{"phone"}</option>
+                </select>
+                <button
+                  type="submit"
+                  onClick={() => {
+                    setParams({ searchBy, keyword: keyword.trim() });
+                  }}
+                  className="search-button"
+                >
+                  search
+                </button>
+              </div>
             </div>
             <div className="col-lg-2 col-6 col-md-3">
               <select className="form-select">

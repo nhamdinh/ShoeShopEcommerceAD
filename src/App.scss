@@ -918,10 +918,10 @@ ul.row-sm {
   text-decoration: underline;
 }
 .search-button {
-  width: 30%;
   background-color: black;
   color: white;
   border: 0;
+  border-radius: 5px;
   text-transform: uppercase;
   font-size: 12px;
 }
@@ -959,4 +959,17 @@ ul.row-sm {
       transform: rotate(10deg);
     }
   }
+}
+
+.select__user {
+  background-color: #f3f3f3;
+  border: 1px solid #ed1c24;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  border-radius: 5px;
+}
+.df {
+  display: flex;
+  gap: 8px;
 }
