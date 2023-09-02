@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
-import { useGetProductsQuery } from "../../store/components/products/productsApi";
+import {
+  useGetBrandsQuery,
+  useGetProductsQuery,
+} from "../../store/components/products/productsApi";
 import Product from "./Product";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +20,27 @@ const MainProducts = () => {
   const [iterator, setiterator] = useState<any>([]);
 
   const location = useLocation();
+
+  const [brand, setbrand] = useState<any>("All category");
+  const [brands, setbrands] = useState<any>([]);
+  const {
+    data: brandsdata,
+    error: brandsserror,
+    isSuccess: brandsisSuccess,
+    isLoading: isLoadingbrands,
+  } = useGetBrandsQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+  useEffect(() => {
+    if (brandsisSuccess) {
+      setbrands(brandsdata?.brands);
+    }
+  }, [brandsdata]);
+
   const [value, setValue] = useState<any>("");
 
   const [keyword, setKeyword] = useState<any>("");
@@ -67,10 +91,11 @@ const MainProducts = () => {
     }
   }, [dataProducts]);
 
-  const submitHandler = (value: any) => {
+  const submitHandler = (value: any, bra: any) => {
     setKeyword(value);
-    if (value.trim()) {
-      navigate(`/products?search=${value.trim()}`);
+    if (value.trim() || bra !== "All category") {
+      setParams({ ...params, brand: bra === "All category" ? "All" : bra });
+      navigate(`/products?search=${value.trim()}&&brand=${bra}`);
     } else {
       navigate("/products");
     }
@@ -80,7 +105,18 @@ const MainProducts = () => {
     <>
       <section className="content-main">
         <div className="content-header">
-          <h2 className="content-title">{t("Products")}</h2>
+          <h2
+            className="content-title"
+            onClick={() => {
+              setParams({ ...params, brand: "", keyword: "" });
+              setbrand("All category");
+              setKeyword("")
+              setValue("")
+              navigate("/products");
+            }}
+          >
+            {t("Products")}
+          </h2>
           <div>
             <Link to="/addproduct" className="btn btn-primary">
               Create new
@@ -103,14 +139,14 @@ const MainProducts = () => {
                     }}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") {
-                        submitHandler(value);
+                        submitHandler(value, brand);
                       }
                     }}
                   />
                   <button
                     type="submit"
                     onClick={() => {
-                      submitHandler(value);
+                      submitHandler(value, brand);
                     }}
                     className="search-button"
                   >
@@ -119,11 +155,19 @@ const MainProducts = () => {
                 </div>
               </div>
               <div className="col-lg-2 col-6 col-md-3">
-                <select className="form-select">
+                <select
+                  className="form-select"
+                  value={brand}
+                  onChange={(e) => {
+                    setbrand(e.target.value);
+                    submitHandler(keyword, e.target.value);
+                  }}
+                >
                   <option>All category</option>
-                  <option>Electronics</option>
-                  <option>Clothings</option>
-                  <option>Something else</option>
+
+                  {brands?.map((bra: any) => {
+                    return <option key={bra?._id}>{bra?.brand}</option>;
+                  })}
                 </select>
               </div>
               <div className="col-lg-2 col-6 col-md-3">

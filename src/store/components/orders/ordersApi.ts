@@ -85,6 +85,7 @@ export const ordersApi = createApi({
       query: (data) => ({
         url: `orders/all-admin`,
         method: "GET",
+        params: data,
       }),
     }),
   }),

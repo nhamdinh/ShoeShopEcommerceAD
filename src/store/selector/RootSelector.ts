@@ -1,4 +1,5 @@
 export const getUserInfo = (state: any) => state.auth.userInfo;
+export const getChatNotices = (state: any) => state.productsReducer.userChatNotices;
 
 // custom dialog for confirm
 export const getDialogContent = (state: any) => state.dialog.content;
