@@ -10,6 +10,7 @@ import { productsApi } from "./components/products/productsApi";
 import { ordersApi } from "./components/orders/ordersApi";
 import { authApi } from "./components/auth/authApi";
 import authReducer, { userLogout } from "./components/auth/authSlice";
+import productsReducer from "./components/products/productsSlice";
 
 /*import authReducer, { userLogout } from "../pages/Auth/authSlice";
 import modalReducer from "../components/customModal/modalSlice";
@@ -21,6 +22,7 @@ import { faqApi } from "../pages/FaqManagement/faqApi";
 import { advertisementApi } from "../pages/AdvertisementManagement/advertisementApi"; */
 const rootReducer = {
   [productsApi.reducerPath]: productsApi.reducer,
+  productsReducer: productsReducer,
   [ordersApi.reducerPath]: ordersApi.reducer,
   auth: authReducer,
   [authApi.reducerPath]: authApi.reducer,
@@ -42,8 +44,8 @@ const rtkQueryErrorLogger: Middleware =
        */ // unauthorized
       if (action.payload.status === 401) {
         console.log("rtkQueryErrorLogger");
-        api.dispatch(userLogout());
-        window.location.href = "/login";
+        // api.dispatch(userLogout());
+        // window.location.href = "/login";
       }
     }
     return next(action);

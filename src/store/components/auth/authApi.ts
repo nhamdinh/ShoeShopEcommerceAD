@@ -23,7 +23,7 @@ export const authApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["getProfile__TAG"],
+  tagTypes: ["getProfile__TAG", "getAllMember__TAG"],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
@@ -38,6 +38,7 @@ export const authApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["getAllMember__TAG"],
     }),
 
     getProfile: builder.query({
@@ -60,6 +61,22 @@ export const authApi = createApi({
         url: `/users/all-admin`,
         method: "GET",
       }),
+      providesTags: ["getAllMember__TAG"],
+    }),
+    clearCountChat: builder.mutation({
+      query: (data) => ({
+        url: `/users/clear-count-chat`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["getAllMember__TAG"],
+    }),
+    getStory: builder.query({
+      query: (data) => ({
+        url: `/users/get-story`,
+        method: "GET",
+        params: data,
+      }),
     }),
   }),
 });
@@ -69,5 +86,7 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useUpdateProfileMutation,
+  useClearCountChatMutation,
   useGetAllMemberQuery,
+  useGetStoryQuery,
 } = authApi;
