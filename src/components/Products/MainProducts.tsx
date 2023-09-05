@@ -97,6 +97,7 @@ const MainProducts = () => {
       setParams({ ...params, brand: bra === "All category" ? "All" : bra });
       navigate(`/products?search=${value.trim()}&&brand=${bra}`);
     } else {
+      setParams({ ...params, brand: "", keyword: "" });
       navigate("/products");
     }
   };
@@ -110,8 +111,8 @@ const MainProducts = () => {
             onClick={() => {
               setParams({ ...params, brand: "", keyword: "" });
               setbrand("All category");
-              setKeyword("")
-              setValue("")
+              setKeyword("");
+              setValue("");
               navigate("/products");
             }}
           >
