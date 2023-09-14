@@ -232,17 +232,14 @@ const EditProductMain = () => {
                   {errorupdateProduct && (
                     <Message
                       variant="alert-danger"
-                      mess={JSON.stringify(errorupdateProduct)}
+                      mess={errorupdateProduct}
                     ></Message>
                   )}
                   {LoadingupdateProduct && <Loading />}
                   {isLoading ? (
                     <Loading />
                   ) : error ? (
-                    <Message
-                      variant="alert-danger"
-                      mess={JSON.stringify(error)}
-                    ></Message>
+                    <Message variant="alert-danger" mess={error}></Message>
                   ) : (
                     <>
                       <div className="mb-4">

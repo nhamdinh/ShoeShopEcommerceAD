@@ -97,7 +97,7 @@ const OrderMain = () => {
             ) : error ? (
               <Message
                 variant="alert-danger"
-                mess={JSON.stringify(error)}
+                mess={error}
               ></Message>
             ) : (
               <Orders orders={orders} />

@@ -187,7 +187,7 @@ const MainProducts = () => {
             ) : error ? (
               <Message
                 variant="alert-danger"
-                mess={JSON.stringify(error)}
+                mess={error}
               ></Message>
             ) : (
               <div className="row">

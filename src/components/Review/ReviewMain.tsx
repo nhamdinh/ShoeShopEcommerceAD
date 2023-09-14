@@ -73,7 +73,7 @@ export default function ReviewMain() {
             ) : error ? (
               <Message
                 variant="alert-danger"
-                mess={JSON.stringify(error)}
+                mess={error}
               ></Message>
             ) : (
               <Reviews reviews={reviews} />

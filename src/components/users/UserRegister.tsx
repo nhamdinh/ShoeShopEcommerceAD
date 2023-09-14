@@ -20,7 +20,7 @@ export default function UserRegister() {
   const navigate = useNavigate();
 
   const [register, { isLoading, error }] = useRegisterMutation();
-
+  console.log(error)
   const onRegister = async (values: any) => {
     const res = await register(values);
 
@@ -39,14 +39,24 @@ export default function UserRegister() {
         })
       );
     } else {
-      dispatch(
-        openToast({
-          isOpen: Date.now(),
-          content: "Add User Admin Failed",
-          step: 2,
-        })
-      );
       setisError(true);
+      //@ts-ignore
+      const error = res?.error;
+      const dataError = error?.data ?? [];
+      dataError.map((err: any) => {
+        const content = err?.msg ?? "Operate Failed";
+        const myTimeout = setTimeout(() => {
+          dispatch(
+            openToast({
+              isOpen: Date.now(),
+              content: content,
+              step: 2,
+            })
+          );
+        }, 100);
+
+        return () => clearTimeout(myTimeout);
+      });
     }
   };
 
@@ -62,9 +72,7 @@ export default function UserRegister() {
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center login-center">
-      {isError && (
-        <Message variant="alert-danger" mess={JSON.stringify(error)} />
-      )}
+      {isError && <Message variant="alert-danger" mess={error} />}
 
       <form
         className="Login col-md-8 col-lg-4 col-11"

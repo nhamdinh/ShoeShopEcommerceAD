@@ -64,7 +64,7 @@ const Login = () => {
         {isError && (
           <Message
             variant="alert-danger"
-            mess={JSON.stringify(error)}
+            mess={error}
           ></Message>
         )}
         {isLoading && <Loading />}
