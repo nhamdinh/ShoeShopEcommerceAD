@@ -20,7 +20,7 @@ export default function UserRegister() {
   const navigate = useNavigate();
 
   const [register, { isLoading, error }] = useRegisterMutation();
-  console.log(error)
+  console.log(error);
   const onRegister = async (values: any) => {
     const res = await register(values);
 
@@ -43,20 +43,22 @@ export default function UserRegister() {
       //@ts-ignore
       const error = res?.error;
       const dataError = error?.data ?? [];
-      dataError.map((err: any) => {
-        const content = err?.msg ?? "Operate Failed";
-        const myTimeout = setTimeout(() => {
-          dispatch(
-            openToast({
-              isOpen: Date.now(),
-              content: content,
-              step: 2,
-            })
-          );
-        }, 100);
+      if (dataError?.length > 0) {
+        dataError.map((err: any) => {
+          const content = err?.msg ?? "Operate Failed";
+          const myTimeout = setTimeout(() => {
+            dispatch(
+              openToast({
+                isOpen: Date.now(),
+                content: content,
+                step: 2,
+              })
+            );
+          }, 100);
 
-        return () => clearTimeout(myTimeout);
-      });
+          return () => clearTimeout(myTimeout);
+        });
+      }
     }
   };
 
