@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/LoadingError/Loading";
 import Message from "../components/LoadingError/Error";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ACCESSTOKEN_STORAGE, LANG_STORAGE, NAME_STORAGE } from "../utils/constants";
+import {
+  ACCESSTOKEN_STORAGE,
+  LANG_STORAGE,
+  NAME_STORAGE,
+} from "../utils/constants";
 import { useLoginMutation } from "../store/components/auth/authApi";
 import { openToast } from "../store/components/customDialog/toastSlice";
 
@@ -22,7 +26,7 @@ const Login = () => {
   const onLogin = async (values: any) => {
     const res = await login(values);
     //@ts-ignore
-    const data = res?.data;
+    const data = res?.data?.metadata;
 
     if (data) {
       if (data.isAdmin) {
@@ -61,12 +65,7 @@ const Login = () => {
       style={{ maxWidth: "380px", marginTop: "100px" }}
     >
       <div className="card-body">
-        {isError && (
-          <Message
-            variant="alert-danger"
-            mess={error}
-          ></Message>
-        )}
+        {isError && <Message variant="alert-danger" mess={error}></Message>}
         {isLoading && <Loading />}
         <h4 className="card-title mb-4 text-center">Sign in</h4>
         <form onSubmit={submitHandler}>
