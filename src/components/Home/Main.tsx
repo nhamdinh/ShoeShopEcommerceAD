@@ -26,7 +26,7 @@ const Main = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setorders(dataFetch);
+      setorders(dataFetch?.metadata);
     }
   }, [dataFetch]);
 

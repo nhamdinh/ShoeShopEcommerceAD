@@ -40,7 +40,7 @@ const UserComponent = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setdataFetched(data?.users);
+      setdataFetched(data?.metadata?.users);
     }
   }, [data]);
 
@@ -131,10 +131,7 @@ const UserComponent = () => {
           {isLoading ? (
             <Loading />
           ) : error ? (
-            <Message
-              variant="alert-danger"
-              mess={error}
-            ></Message>
+            <Message variant="alert-danger" mess={error}></Message>
           ) : tab === 1 ? (
             <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
               {userList?.map((user: any) => {

@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { formatMoney } from "../../utils/commonFunction";
 
 const OrderDetailProducts = ({ order, loading }: any) => {
+  const [orderItems, setorderItems] = useState<any>([]);
+  useEffect(() => {
+    if (order?.orderItems) {
+      setorderItems(order?.orderItems[0]?.itemProducts);
+    }
+  }, [order]);
   // if (!loading) {
   //   // Calculate Price
   //   const addDecimals = (num: number) => {
@@ -28,7 +35,7 @@ const OrderDetailProducts = ({ order, loading }: any) => {
         </tr>
       </thead>
       <tbody>
-        {order?.orderItems?.map((item: any, index: number) => (
+        {orderItems?.map((item: any, index: number) => (
           <tr key={index}>
             <td>
               <Link className="itemside" to="#">
@@ -53,15 +60,19 @@ const OrderDetailProducts = ({ order, loading }: any) => {
           <td colSpan={4}>
             <article className="float-end">
               <dl className="dlist">
-                <dt>Subtotal:</dt> <dd>${order?.totalPriceItems}</dd>
+                <dt>Subtotal:</dt> <dd>${formatMoney(order?.totalAmount)}</dd>
               </dl>
               <dl className="dlist">
-                <dt>Shipping cost:</dt> <dd>${order?.shippingPrice}</dd>
+                <dt>Discount total :</dt>{" "}
+                <dd>${formatMoney(order?.totalDiscount)}</dd>
+              </dl>
+              <dl className="dlist">
+                <dt>Shipping cost:</dt> <dd>${formatMoney(order?.feeShip)}</dd>
               </dl>
               <dl className="dlist">
                 <dt>Grand total:</dt>
                 <dd>
-                  <b className="h5">${order?.totalPrice}</b>
+                  <b className="h5">${formatMoney(order?.totalAmountPay)}</b>
                 </dd>
               </dl>
               <dl className="dlist">
