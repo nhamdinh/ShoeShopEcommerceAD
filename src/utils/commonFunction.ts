@@ -1,3 +1,5 @@
+import { REGEX_CURRENCY } from "./constants";
+
 export const passwordCheck = (pass: any) => {
   let regex =
     /^(?=[^0-9\n]*[0-9])(?=.*[a-zA-Z])(?=[^#?!@$%^&*\n-]*[#?!@$%^&*-]).{8,20}$/;
@@ -26,19 +28,6 @@ export const addCommas = (num: any, style = ",") => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, style);
 };
 
-export const formatMoney = (text: any) => {
-  if (!text) {
-    return "0";
-  } else {
-    if (+text < 0) {
-      text = +text * -1;
-      return "-" + addCommas(removeNonNumeric(text.toString()));
-    } else {
-      return addCommas(removeNonNumeric(text.toString()));
-    }
-  }
-};
-
 export const formatMoneyCurrency = (text: any) => {
   if (!text) {
     return "0.00";
@@ -64,4 +53,14 @@ export const formatCustomerPhoneNumber = (value: string) => {
 
 export const formatPhone = (val: string) => {
   return val.replace(" ", "").replace(/[^0-9 ]+/g, "");
+};
+export const formatMoney = (text: any) => {
+  if (!text) {
+    return "0";
+  }
+  if (+text < 0) {
+    text = +text * -1;
+    return "-" + text.toString().replace(REGEX_CURRENCY, "$1,");
+  }
+  return text.toString().replace(REGEX_CURRENCY, "$1,");
 };

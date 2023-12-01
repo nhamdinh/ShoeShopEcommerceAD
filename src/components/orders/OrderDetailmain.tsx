@@ -31,7 +31,7 @@ const OrderDetailmain = ({ orderId }: any) => {
 
   useEffect(() => {
     if (isSuccess) {
-      setorderDetails(dataFetch);
+      setorderDetails(dataFetch?.metadata);
     }
   }, [dataFetch]);
 

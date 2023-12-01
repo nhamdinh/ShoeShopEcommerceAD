@@ -26,7 +26,7 @@ const OrderMain = () => {
   });
   useEffect(() => {
     if (isSuccess) {
-      setorders(dataFetch);
+      setorders(dataFetch?.metadata);
     }
   }, [dataFetch]);
 
@@ -95,10 +95,7 @@ const OrderMain = () => {
             {isLoading ? (
               <Loading />
             ) : error ? (
-              <Message
-                variant="alert-danger"
-                mess={error}
-              ></Message>
+              <Message variant="alert-danger" mess={error}></Message>
             ) : (
               <Orders orders={orders} />
             )}

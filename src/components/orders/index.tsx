@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { formatCustomerPhoneNumber } from "../../utils/commonFunction";
+import {
+  formatCustomerPhoneNumber,
+  formatMoney,
+} from "../../utils/commonFunction";
 
 const Orders = ({ orders }: any) => {
   return (
@@ -27,11 +30,11 @@ const Orders = ({ orders }: any) => {
             <td>{index + 1}</td>
 
             <td>
-              <b>{order?.user?.name}</b>
+              <b>{order?.userId?.name}</b>
             </td>
-            <td>{order?.user?.email}</td>
-            <td>{formatCustomerPhoneNumber(order?.user?.phone)}</td>
-            <td>${order?.totalPrice}</td>
+            <td>{order?.userId?.email}</td>
+            <td>{formatCustomerPhoneNumber(order?.userId?.phone)}</td>
+            <td>${formatMoney(order?.totalAmountPay)}</td>
             <td>
               {order?.isPaid ? (
                 <span className="badge rounded-pill alert-success">
