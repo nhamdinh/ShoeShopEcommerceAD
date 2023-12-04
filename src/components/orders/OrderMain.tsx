@@ -3,14 +3,19 @@ import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
 import Orders from ".";
 import { useGetOrderAdQuery } from "../../store/components/orders/ordersApi";
+import { useSelector } from "react-redux";
+import { getUserInfo } from "../../store/selector/RootSelector";
 
 const OrderMain = () => {
+  const userInfo = useSelector(getUserInfo);
+
   const [orders, setorders] = useState<any>([]);
 
   const [searchBy, setsearchBy] = useState<any>("email");
   const [keyword, setkeyword] = useState<any>("");
 
   const [params, setParams] = useState<any>({
+    shopId: userInfo?._id,
     searchBy,
     keyword,
   });
@@ -24,9 +29,23 @@ const OrderMain = () => {
     refetchOnMountOrArgChange: true,
     skip: false,
   });
+
+  useEffect(() => {
+    setParams({
+      ...params,
+      shopId: userInfo?._id,
+    });
+  }, [userInfo]);
+
   useEffect(() => {
     if (isSuccess) {
-      setorders(dataFetch?.metadata);
+      let ods = dataFetch?.metadata.filter((order: any) => {
+        // if (order?.shopId?._id === userInfo?._id) {
+        // }
+        return order;
+      });
+
+      setorders(ods);
     }
   }, [dataFetch]);
 
@@ -49,7 +68,11 @@ const OrderMain = () => {
                   onChange={(e) => setkeyword(e.target.value)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                      setParams({ searchBy, keyword: keyword.trim() });
+                      setParams({
+                        ...params,
+                        searchBy,
+                        keyword: keyword.trim(),
+                      });
                     }
                   }}
                 />
@@ -65,7 +88,7 @@ const OrderMain = () => {
                 <button
                   type="submit"
                   onClick={() => {
-                    setParams({ searchBy, keyword: keyword.trim() });
+                    setParams({ ...params, searchBy, keyword: keyword.trim() });
                   }}
                   className="search-button"
                 >

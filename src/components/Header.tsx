@@ -47,8 +47,8 @@ const Header = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setdataFetched(data);
-      dispatch(setUserInfo({ ...data }));
+      setdataFetched(data?.metadata);
+      dispatch(setUserInfo({ ...data?.metadata }));
     } else {
     }
   }, [data]);

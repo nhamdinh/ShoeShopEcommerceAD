@@ -12,8 +12,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
+import { getUserInfo } from "../../store/selector/RootSelector";
 
 const MainProducts = () => {
+  const userInfo = useSelector(getUserInfo);
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,16 +57,18 @@ const MainProducts = () => {
   const [params, setParams] = useState<any>({
     page: pagenumber ?? 1,
     limit: PAGE_SIZE,
-    order: "desc",
-    orderBy: "createdAt",
+    product_shop: userInfo?._id,
   });
+  useEffect(() => {
+    setParams({ ...params, product_shop: userInfo?._id });
+  }, [userInfo]);
 
   useEffect(() => {
     setParams({ ...params, page: pagenumber });
   }, [pagenumber]);
 
   const [currentPage, setCurrentPage] = useState<any>(1);
-  const [total, setTotal] = useState<any>(1);
+  const [totalPages, settotalPages] = useState<any>(1);
 
   const [products, setdataFetched] = useState<any>([]);
   const {
@@ -83,11 +88,11 @@ const MainProducts = () => {
   );
   useEffect(() => {
     if (isSuccess) {
-      setdataFetched(dataProducts?.products);
-      setTotal(dataProducts?.totalPages);
-      setCurrentPage(dataProducts?.page);
+      setdataFetched(dataProducts?.metadata?.products);
+      settotalPages(dataProducts?.metadata?.totalPages);
+      setCurrentPage(dataProducts?.metadata?.page);
       //@ts-ignore
-      setiterator([...Array(dataProducts?.totalPages).keys()]);
+      setiterator([...Array(dataProducts?.metadata?.totalPages).keys()]);
     }
   }, [dataProducts]);
 
@@ -185,10 +190,7 @@ const MainProducts = () => {
             {isLoading ? (
               <Loading />
             ) : error ? (
-              <Message
-                variant="alert-danger"
-                mess={error}
-              ></Message>
+              <Message variant="alert-danger" mess={error}></Message>
             ) : (
               <div className="row">
                 {/* Products */}
@@ -198,9 +200,9 @@ const MainProducts = () => {
               </div>
             )}
 
-            {total > 1 && (
+            {totalPages > 1 && (
               <nav className="float-end mt-4" aria-label="Page navigation">
-                <ul className="pagination">
+                <ul className="pagination cursor__pointer">
                   <li
                     className={
                       currentPage === 1 ? "page-item disabled" : "page-item"
@@ -238,12 +240,15 @@ const MainProducts = () => {
                   ))}
                   <li
                     className={
-                      currentPage === total ? "page-item disabled" : "page-item"
+                      currentPage === totalPages
+                        ? "page-item disabled"
+                        : "page-item"
                     }
                     onClick={() => {
-                      navigate(
-                        `/products?page=${currentPage + 1}&&search=${keyword}`
-                      );
+                      if (currentPage < totalPages)
+                        navigate(
+                          `/products?page=${currentPage + 1}&&search=${keyword}`
+                        );
                     }}
                   >
                     <div className="page-link">Next</div>
