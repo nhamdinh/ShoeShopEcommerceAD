@@ -52,14 +52,14 @@ const Product = ({ product }: any) => {
       <div className="col-md-6 col-sm-6 col-lg-3 mb-5">
         <div className="card card-product-grid shadow-sm">
           <Link to="#" className="img-wrap">
-            <img src={product?.image} alt="Product" />
+            <img src={product?.product_thumb} alt="Product" />
           </Link>
           <div className="info-wrap">
             <div className="title text-truncate colorred">
-              Type: {product?.category?.brand + " / " + product?.category?.name}
+              Type: {product?.product_attributes?.brand + " / " + product?.product_attributes?.material}
             </div>
-            <div className="title text-truncate">{product?.name}</div>
-            <div className="price mb-2">${product?.price}</div>
+            <div className="title text-truncate">{product?.product_name}</div>
+            <div className="price mb-2">${product?.product_price}</div>
             <div className="row">
               <Link
                 to={`/product/${product?._id}/edit`}

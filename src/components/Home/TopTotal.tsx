@@ -3,7 +3,7 @@ import { formatMoney, formatMoneyCurrency } from "../../utils/commonFunction";
 import { useGetProductsQuery } from "../../store/components/products/productsApi";
 import { useNavigate } from "react-router-dom";
 
-const TopTotal = ({ orders }: any) => {
+const TopTotal = ({ orders, userInfo }: any) => {
   const navigate = useNavigate();
 
   const [products, setdataFetched] = useState<any>([]);
@@ -19,21 +19,25 @@ const TopTotal = ({ orders }: any) => {
   );
   useEffect(() => {
     if (isSuccess) {
-      setdataFetched(data?.products);
+      let prs = data?.metadata?.products?.filter((product: any) => {
+        // console.log(product)
+        if (product?.product_shop?._id === userInfo?._id) {
+          return product;
+        }
+      });
+      setdataFetched(prs);
     }
   }, [data]);
 
   const [totalSale, settotalSale] = useState<any>(0);
   useEffect(() => {
-    let totalSale_temp = 0;
     if (orders) {
-      orders.map((order: any) =>
-        order.isPaid === true
-          ? (totalSale_temp = +totalSale_temp + +order.totalPrice)
-          : null
-      );
+      let totalSale_temp = orders.reduce((acc: number, order: any) => {
+        return +acc + (order.isPaid === true ? +order.totalAmountPay : 0);
+      }, 0);
+
+      settotalSale(totalSale_temp);
     }
-    settotalSale(totalSale_temp);
   }, [orders]);
 
   return (

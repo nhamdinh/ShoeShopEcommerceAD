@@ -1,10 +1,34 @@
 import React, { useEffect, useState } from "react";
 import Message from "../LoadingError/Error";
 import Loading from "../LoadingError/Loading";
-import { useGetProductsQuery } from "../../store/components/products/productsApi";
+import {
+  useGetProductsQuery,
+  useGetReviewsByShopQuery,
+} from "../../store/components/products/productsApi";
 import Reviews from "./Reviews";
 
 export default function ReviewMain() {
+  const {
+    data,
+    error: err,
+    isSuccess: is,
+    isLoading: lo,
+  } = useGetReviewsByShopQuery(
+    {
+      page: 1,
+      limit: 1000,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: false,
+    }
+  );
+  useEffect(() => {
+    if (is) {
+      console.log(data)
+    }
+  }, [data]);
+
   const [reviews, setreviews] = useState<any>([]);
   const {
     data: dataFetch,
@@ -23,13 +47,14 @@ export default function ReviewMain() {
   );
   useEffect(() => {
     if (isSuccess) {
+      // console.log(dataFetch);
       let reviews: any = [];
       dataFetch?.products?.map((product: any) => {
         product?.reviews?.map((rew: any) => {
           reviews.push({ ...rew, productId: product?._id });
         });
       });
-      setreviews(reviews);
+      // setreviews(reviews);
     }
   }, [dataFetch]);
 
@@ -71,10 +96,7 @@ export default function ReviewMain() {
             {isLoading ? (
               <Loading />
             ) : error ? (
-              <Message
-                variant="alert-danger"
-                mess={error}
-              ></Message>
+              <Message variant="alert-danger" mess={error}></Message>
             ) : (
               <Reviews reviews={reviews} />
             )}
