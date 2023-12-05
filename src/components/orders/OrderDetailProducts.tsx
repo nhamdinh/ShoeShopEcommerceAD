@@ -51,8 +51,8 @@ const OrderDetailProducts = ({ order, loading }: any) => {
               </Link>
             </td>
             <td>${item?.price} </td>
-            <td>{item?.qty} </td>
-            <td className="text-end"> ${item?.qty * item?.price}</td>
+            <td>{item?.quantity} </td>
+            <td className="text-end"> ${item?.quantity * item?.price}</td>
           </tr>
         ))}
 
@@ -68,6 +68,9 @@ const OrderDetailProducts = ({ order, loading }: any) => {
               </dl>
               <dl className="dlist">
                 <dt>Shipping cost:</dt> <dd>${formatMoney(order?.feeShip)}</dd>
+              </dl>
+              <dl className="dlist">
+                <dt>Tax cost:</dt> <dd>${formatMoney(order?.taxPrice)}</dd>
               </dl>
               <dl className="dlist">
                 <dt>Grand total:</dt>
