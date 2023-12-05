@@ -15,6 +15,7 @@ const Reviews = ({ reviews }: any) => {
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Comment</th>
+          <th scope="col">Rating</th>
           <th scope="col">Date</th>
           <th scope="col" className="text-end">
             Action
@@ -29,7 +30,8 @@ const Reviews = ({ reviews }: any) => {
     </table>
   );
 };
-function CompTableReviews({ rev }: any) {
+
+const CompTableReviews = ({ rev }: any) => {
   const [value, setValue] = useState<any>(rev?.comment);
 
   const dispatch = useDispatch();
@@ -64,7 +66,7 @@ function CompTableReviews({ rev }: any) {
   return (
     <tr key={rev?._id}>
       <td>
-        <b>{rev?.name}</b>
+        <img className="img__rev" src={rev?.productId?.product_thumb} alt="z" />
       </td>
       <td>
         <TextArea
@@ -74,6 +76,7 @@ function CompTableReviews({ rev }: any) {
         />
       </td>
 
+      <td>{rev?.rating}</td>
       <td>{moment(rev?.updatedAt).format("MMM Do YY")}</td>
 
       <td className="d-flex justify-content-end align-item-center gap8px">
@@ -108,5 +111,5 @@ function CompTableReviews({ rev }: any) {
       </td>
     </tr>
   );
-}
+};
 export default Reviews;

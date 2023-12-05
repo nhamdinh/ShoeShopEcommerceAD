@@ -8,34 +8,7 @@ import {
 import Reviews from "./Reviews";
 
 export default function ReviewMain() {
-  const {
-    data,
-    error: err,
-    isSuccess: is,
-    isLoading: lo,
-  } = useGetReviewsByShopQuery(
-    {
-      page: 1,
-      limit: 1000,
-    },
-    {
-      refetchOnMountOrArgChange: true,
-      skip: false,
-    }
-  );
-  useEffect(() => {
-    if (is) {
-      console.log(data)
-    }
-  }, [data]);
-
-  const [reviews, setreviews] = useState<any>([]);
-  const {
-    data: dataFetch,
-    error,
-    isSuccess,
-    isLoading,
-  } = useGetProductsQuery(
+  const { data, error, isSuccess, isLoading } = useGetReviewsByShopQuery(
     {
       page: 1,
       limit: 1000,
@@ -47,16 +20,12 @@ export default function ReviewMain() {
   );
   useEffect(() => {
     if (isSuccess) {
-      // console.log(dataFetch);
-      let reviews: any = [];
-      dataFetch?.products?.map((product: any) => {
-        product?.reviews?.map((rew: any) => {
-          reviews.push({ ...rew, productId: product?._id });
-        });
-      });
-      // setreviews(reviews);
+      console.log(data);
+      setreviews(data?.metadata);
     }
-  }, [dataFetch]);
+  }, [data]);
+
+  const [reviews, setreviews] = useState<any>([]);
 
   return (
     <section className="content-main">
