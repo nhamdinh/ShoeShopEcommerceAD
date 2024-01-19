@@ -1,5 +1,6 @@
 import "./App.scss";
 import "./responsive.scss";
+import "./tailwind.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 
