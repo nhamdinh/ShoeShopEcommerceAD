@@ -29,6 +29,17 @@ const Sidebar = () => {
             <li className="menu-item">
               <NavLink
                 // activeClassName="active"
+                className="menu-link "
+                to="/thudung"
+              >
+                <i className="icon fas fa-usd-circle"></i>
+                <span className="text">123</span>
+              </NavLink>
+            </li>
+
+            <li className="menu-item">
+              <NavLink
+                // activeClassName="active"
                 className="menu-link"
                 to="/"
                 // exact={true}

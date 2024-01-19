@@ -10,6 +10,8 @@ export const FOLDER_CATEGORYS_STORAGE = "categorys";
 export const FOLDER_PRODUCS_STORAGE = "products";
 export const PAGE_SIZE = 8;
 export const REGEX_CURRENCY = /(\d)(?=(\d{3})+(?!\d))/g;
+export const DATE_FORMAT = "YYYY-MM-DD";
+export const RE_ONLY_NUMBER = /^[0-9\b]+$/;
 
 export const ToastObjects = {
   pauseOnFocusLoss: false,

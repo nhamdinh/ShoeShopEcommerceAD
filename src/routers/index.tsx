@@ -8,6 +8,7 @@ import OrderScreen from "../screens/OrderScreen";
 import ProductEditScreen from "../screens/ProductEditScreen";
 import ProductScreen from "../screens/ProductScreen";
 import ReviewScreen from "../screens/ReviewScreen";
+import ThuDungScreen from "../screens/ThuDungScreen";
 import UsersScreen from "../screens/UsersScreen";
 
 export const PrivateRoutes = [
@@ -22,6 +23,10 @@ export const PrivateRoutes = [
   {
     path: "/users",
     element: <UsersScreen />,
+  },
+  {
+    path: "/thudung",
+    element: <ThuDungScreen />,
   },
   {
     path: "/products",
