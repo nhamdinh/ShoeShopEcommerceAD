@@ -19,3 +19,14 @@ export const ToastObjects = {
   pauseOnHover: false,
   autoClose: 1000,
 };
+export const GIO: any = {
+  THUONG: 170,
+  THUONG__500G: 85,
+  VIP: 210,
+  VIP_500G: 105,
+  BAP_CUON: 270,
+  BAP_THUONG: 270,
+  BAP_VAN: 280,
+  GAN_NGAM: 110,
+  BAP_NGAM: 150,
+};

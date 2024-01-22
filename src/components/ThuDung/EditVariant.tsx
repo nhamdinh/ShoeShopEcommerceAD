@@ -18,7 +18,11 @@ import moment from "moment";
 import { DATE_FORMAT, RE_ONLY_NUMBER, GIO } from "../../utils/constants";
 import { formatMoney } from "../../utils/commonFunction";
 
-export default function Variant({ variant, cb_delTable, cb_setTable }: any) {
+export default function EditVariant({
+  variant,
+  cb_delTable,
+  cb_setTable,
+}: any) {
   const [options, setoptions] = useState<any>(
     Object.keys(GIO).map((key) => {
       return {
@@ -64,13 +68,7 @@ export default function Variant({ variant, cb_delTable, cb_setTable }: any) {
           id="product_price"
           readOnly
           value={variant?.price}
-          onChange={(e) => {
-            const numInput = e.target.value;
-            if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
-              //   setPrice(numInput);
-              //   cb_setTable(variant?.id, "price", numInput);
-            }
-          }}
+          onChange={(e) => {}}
         />
       </div>
 
