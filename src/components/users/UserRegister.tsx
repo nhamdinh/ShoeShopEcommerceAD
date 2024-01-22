@@ -71,7 +71,7 @@ export default function UserRegister() {
     );
   };
 
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const [paymentMethod, setPaymentMethod] = useState<any>("PayPal");
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center login-center">
       {isError && <Message variant="alert-danger" mess={error} />}

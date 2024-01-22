@@ -30,13 +30,32 @@ const Sidebar = () => {
               <NavLink
                 // activeClassName="active"
                 className="menu-link "
-                to="/thudung"
+                to="/thudung-list"
               >
                 <i className="icon fas fa-usd-circle"></i>
-                <span className="text">123</span>
+                <span className="text">Thu Dung Pretty LIST</span>
               </NavLink>
             </li>
-
+            <li className="menu-item">
+              <NavLink
+                // activeClassName="active"
+                className="menu-link "
+                to="/thudung-create"
+              >
+                <i className="icon fas fa-usd-circle"></i>
+                <span className="text">Thu Dung Pretty BÁN</span>
+              </NavLink>
+            </li>
+            <li className="menu-item">
+              <NavLink
+                // activeClassName="active"
+                className="menu-link "
+                to="/thudung-create-buy"
+              >
+                <i className="icon fas fa-usd-circle"></i>
+                <span className="text">Thu Dung Pretty MUA</span>
+              </NavLink>
+            </li>
             <li className="menu-item">
               <NavLink
                 // activeClassName="active"

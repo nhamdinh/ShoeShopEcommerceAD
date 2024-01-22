@@ -8,7 +8,10 @@ import OrderScreen from "../screens/OrderScreen";
 import ProductEditScreen from "../screens/ProductEditScreen";
 import ProductScreen from "../screens/ProductScreen";
 import ReviewScreen from "../screens/ReviewScreen";
-import ThuDungScreen from "../screens/ThuDungScreen";
+import ThuDungScreenAdd from "../screens/ThuDungScreenAdd";
+import ThuDungScreenBuy from "../screens/ThuDungScreenBuy";
+import ThuDungScreenDetail from "../screens/ThuDungScreenDetail";
+import ThuDungScreenList from "../screens/ThuDungScreenList";
 import UsersScreen from "../screens/UsersScreen";
 
 export const PrivateRoutes = [
@@ -25,8 +28,20 @@ export const PrivateRoutes = [
     element: <UsersScreen />,
   },
   {
-    path: "/thudung",
-    element: <ThuDungScreen />,
+    path: "/thudung-create",
+    element: <ThuDungScreenAdd />,
+  },
+  {
+    path: "/thudung-create-buy",
+    element: <ThuDungScreenBuy />,
+  },
+  {
+    path: "/thudung-list",
+    element: <ThuDungScreenList />,
+  },
+  {
+    path: "/thudung-list/:id",
+    element: <ThuDungScreenDetail />,
   },
   {
     path: "/products",

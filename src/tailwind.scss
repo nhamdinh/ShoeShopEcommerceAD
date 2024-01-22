@@ -125,11 +125,14 @@
   flex-wrap: wrap;
 }
 .cursor__pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .cursor__not {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }
 .opacity0 {
   opacity: 0;
+}
+.color__ff4545{
+  color: #ff4545;
 }

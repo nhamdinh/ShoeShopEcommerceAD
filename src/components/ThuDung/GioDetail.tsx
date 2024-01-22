@@ -1,39 +1,62 @@
-import "./style.scss";
-import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Col,
-  DatePicker,
-  DatePickerProps,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Typography,
-  notification,
-} from "antd";
+  useFindThuDungGioByIdMutation,
+  useUpdatedOrderByIdMutation,
+} from "../../store/components/thudungGios/thudungGiosApi";
+import "./style.scss";
+import { useEffect, useState } from "react";
+import { DatePicker, DatePickerProps } from "antd";
 import moment from "moment";
 import { DATE_FORMAT, RE_ONLY_NUMBER, GIO } from "../../utils/constants";
-import Variant from "./Variant";
-import {
-  useCreateThudungGioMutation,
-  useGetThudungGiosQuery,
-} from "../../store/components/thudungGios/thudungGiosApi";
-import { openToast } from "../../store/components/customDialog/toastSlice";
+import EditVariant from "./EditVariant";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import type { RadioChangeEvent } from "antd";
 import { Radio } from "antd";
-
-export default function ExportGio({ isBan }: any) {
+import { openToast } from "../../store/components/customDialog/toastSlice";
+export default function GioDetail() {
   const dispatch = useDispatch();
-  const [value, setValue] = useState<any>(1);
+  const location = useLocation();
+  const [orderId, setorderId] = useState<any>("");
+  const [orderDetail, setorderDetail] = useState<any>({});
+  const [findThuDungGioById, { isLoading: aa, error: bb }] =
+    useFindThuDungGioByIdMutation();
+
+  const onFindThuDungGioById = async (values: any) => {
+    const res = await findThuDungGioById(values);
+    //@ts-ignore
+    const data = res?.data;
+
+    if (data) {
+      const _orderDetail = data?.metadata;
+      setDisplayFrom(moment(new Date(sellDate), DATE_FORMAT));
+      setSellDate(_orderDetail?.sellDate);
+      setBuyName(_orderDetail?.buyName);
+      setaddress(_orderDetail?.address);
+      setphone(_orderDetail?.phone);
+      setmetadata(_orderDetail?.metadata);
+      setValue(_orderDetail?.isPaid ? 1 : 2);
+      setDataTable(_orderDetail?.orderItems);
+      setorderDetail(_orderDetail);
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    if (location.pathname.split("/")?.length > 2) {
+      const _orderId = location.pathname.split("/")[2];
+      onFindThuDungGioById({ id: _orderId });
+      setorderId(_orderId);
+    }
+  }, [location.pathname]);
 
   const onChange = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
+  //   console.log(dataTable);
+  const [displayFrom, setDisplayFrom] = useState<any>(
+    moment(new Date(Date.now()), DATE_FORMAT)
+  );
   const [sellDate, setSellDate] = useState<any>(
     moment(new Date()).format(DATE_FORMAT)
   );
@@ -41,27 +64,53 @@ export default function ExportGio({ isBan }: any) {
   const [address, setaddress] = useState<any>("");
   const [phone, setphone] = useState<any>("");
   const [metadata, setmetadata] = useState<any>("");
+  const [value, setValue] = useState<any>(1);
 
   const [dataTable, setDataTable] = useState<any>([]);
-  //   console.log(dataTable);
-  const [displayFrom, setDisplayFrom] = useState<any>(
-    moment(new Date(Date.now()), DATE_FORMAT)
-  );
+
   const onChangeDateStart: DatePickerProps["onChange"] = (date, dateString) => {
     // setStartTime(new Date(dateString).toJSON());
     setSellDate(dateString);
   };
   const isValid = () => {
-    if (isBan) return 1 && buyName && dataTable.length > 0;
-    if (!isBan) return 1 && dataTable.length > 0;
+    return 1 && buyName && dataTable.length > 0;
   };
+
+  const [updatedOrderById, { isLoading: aa1, error: bb1 }] =
+    useUpdatedOrderByIdMutation();
+
+  const onUpdatedOrderById = async (values: any) => {
+    const res = await updatedOrderById(values);
+    //@ts-ignore
+    const data = res?.data;
+
+    if (data) {
+      console.log(data);
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "updated ĐƠN Success",
+          step: 1,
+        })
+      );
+    } else {
+      dispatch(
+        openToast({
+          isOpen: Date.now(),
+          content: "updated ĐƠN Failed",
+          step: 2,
+        })
+      );
+    }
+  };
+
   const submitHandler = (e: any) => {
     e.preventDefault();
     if (isValid())
-      onCreateThudungGio({
-        newModelArr: {
-          isBan,
-          buyName: buyName ?? "DUNG",
+      onUpdatedOrderById({
+        id: orderId,
+        objectParams: {
+          buyName,
           sellDate,
           metadata,
           address,
@@ -73,48 +122,13 @@ export default function ExportGio({ isBan }: any) {
       });
   };
 
-  const [createThudungGio, { isLoading: aa, error: bb }] =
-    useCreateThudungGioMutation();
-
-  const onCreateThudungGio = async (values: any) => {
-    const res = await createThudungGio(values);
-    //@ts-ignore
-    const data = res?.data;
-
-    if (data) {
-      setDataTable([]);
-      setBuyName("");
-      setSellDate(moment(new Date()).format(DATE_FORMAT));
-      setDisplayFrom(moment(new Date(Date.now()), DATE_FORMAT));
-
-      dispatch(
-        openToast({
-          isOpen: Date.now(),
-          content: "Added ĐƠN Success",
-          step: 1,
-        })
-      );
-    } else {
-      dispatch(
-        openToast({
-          isOpen: Date.now(),
-          content: "Add ĐƠN Failed",
-          step: 2,
-        })
-      );
-    }
-  };
-
   return (
     <section className="content-main">
       <div className="content-header">
-        <h2 className="content-title">{isBan ? "Xuất Đơn" : "Nhập Hàng"}</h2>
-        <div></div>
+        <h2 className="content-title">CHI TIẾT ĐƠN</h2>
       </div>
 
       <div className="card mb-4 shadow-sm">
-        <header className="card-header bg-white "></header>
-
         <div className="card-body">
           <button
             type="submit"
@@ -223,7 +237,7 @@ export default function ExportGio({ isBan }: any) {
           <div className="mt20px dataTable">
             {dataTable.map((variant: any) => {
               return (
-                <Variant
+                <EditVariant
                   key={variant?.id}
                   variant={variant}
                   cb_delTable={(id: any) => {
@@ -247,7 +261,7 @@ export default function ExportGio({ isBan }: any) {
                       })
                     );
                   }}
-                ></Variant>
+                ></EditVariant>
               );
             })}
           </div>
