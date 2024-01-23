@@ -2,25 +2,28 @@ import {
   useGetThudungGiosQuery,
   useUpdatedOrderPayMutation,
 } from "../../store/components/thudungGios/thudungGiosApi";
-import { DATE_FORMAT } from "../../utils/constants";
+import { DATE_FORMAT, GIO, GIO_BUY } from "../../utils/constants";
 import "./style.scss";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { Col, Divider, Row } from "antd";
-import { formatMoney } from "../../utils/commonFunction";
+import { findUniqueElements, formatMoney } from "../../utils/commonFunction";
 import { openToast } from "../../store/components/customDialog/toastSlice";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  st_setArrBuy,
+  st_setArrSell,
+} from "../../store/components/thudungGios/thudungGiosSlice";
 
 const style: React.CSSProperties = { background: "#FFFFFF", padding: "8px 0" };
 
-export default function ImportGio() {
+export default function ImportGio({ isBan }: any) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [dataTable, setDataTable] = useState<any>([]);
-  const [dataSum, setSum] = useState<any>([]);
-  console.log(dataSum);
+  const [dataSum, setDataSum] = useState<any>([]);
   const [show, setShow] = useState<any>(false);
   const [totalAmount, settotalAmount] = useState<any>(0);
   const [totalOrderNot, settotalOrderNot] = useState<any>(0);
@@ -30,7 +33,7 @@ export default function ImportGio() {
     isSuccess,
     isLoading,
   } = useGetThudungGiosQuery(
-    {},
+    { isBan },
     {
       refetchOnMountOrArgChange: true,
       skip: false,
@@ -45,23 +48,52 @@ export default function ImportGio() {
           allItems.push({ ...item1 });
         });
       });
-      setSum(
-        allItems
-          .reduce((acc: any, item: any) => {
-            const isExist = acc.find(
-              (item1: any) => item1.label === item.label
-            );
-            if (isExist) {
-              isExist.quantity = +isExist.quantity + +item.quantity;
-            } else {
-              acc.push({ ...item });
-            }
-            return acc;
-          }, [])
-          .sort((aa: any, bb: any) =>
-            aa.label > bb.label ? 1 : aa.label < bb.label ? -1 : 0
-          )
+
+      const _dataSum = allItems
+        .reduce((acc: any, item: any) => {
+          const isExist = acc.find((item1: any) => item1.label === item.label);
+          if (isExist) {
+            isExist.quantity = +isExist.quantity + +item.quantity;
+          } else {
+            acc.push({ ...item });
+          }
+          return acc;
+        }, [])
+        .sort((aa: any, bb: any) =>
+          aa.label > bb.label ? 1 : aa.label < bb.label ? -1 : 0
+        );
+
+      const keys = _dataSum.reduce((acc: any, item: any) => {
+        acc.push(item.label);
+        return acc;
+      }, []);
+      // console.log(keys);
+
+      findUniqueElements(Object.keys(GIO), keys).map(
+        (item: any, index: any) => {
+          _dataSum.push({
+            id: Date.now() + index,
+            label: item,
+            price: isBan ? GIO[item] : GIO_BUY[item],
+            quantity: 0,
+          });
+        }
       );
+      if (isBan) {
+        dispatch(
+          st_setArrSell({
+            arrSell: [..._dataSum],
+          })
+        );
+      } else {
+        dispatch(
+          st_setArrBuy({
+            arrBuy: [..._dataSum],
+          })
+        );
+      }
+
+      setDataSum(_dataSum);
 
       let _totalOrderNot = 0;
       settotalAmount(
@@ -138,7 +170,7 @@ export default function ImportGio() {
             // navigate("/products");
           }}
         >
-          <div>DANH SÁCH ĐƠN</div>
+          <div>DANH SÁCH ĐƠN{isBan ? " BÁN" : " NHẬP"}</div>
           <button
             type="submit"
             onClick={() => {

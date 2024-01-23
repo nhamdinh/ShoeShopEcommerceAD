@@ -15,7 +15,12 @@ import {
   notification,
 } from "antd";
 import moment from "moment";
-import { DATE_FORMAT, RE_ONLY_NUMBER, GIO } from "../../utils/constants";
+import {
+  DATE_FORMAT,
+  RE_ONLY_NUMBER,
+  GIO,
+  GIO_BUY,
+} from "../../utils/constants";
 import Variant from "./Variant";
 import {
   useCreateThudungGioMutation,
@@ -61,7 +66,7 @@ export default function ExportGio({ isBan }: any) {
       onCreateThudungGio({
         newModelArr: {
           isBan,
-          buyName: buyName ?? "DUNG",
+          buyName: buyName ? buyName : "DUNG",
           sellDate,
           metadata,
           address,
@@ -212,7 +217,7 @@ export default function ExportGio({ isBan }: any) {
                 {
                   id: Date.now(),
                   label: "BAP_CUON",
-                  price: 270,
+                  price: isBan ? GIO["BAP_CUON"] : GIO_BUY["BAP_CUON"],
                   quantity: "1",
                 },
               ]);
@@ -237,9 +242,9 @@ export default function ExportGio({ isBan }: any) {
                         const final: any = { ...row };
                         if (row.id === id) {
                           final[key] = val;
-                          Object.keys(GIO).map((key) => {
+                          Object.keys(isBan ? GIO : GIO_BUY).map((key) => {
                             if (val === key) {
-                              final["price"] = GIO[key];
+                              final["price"] = isBan ? GIO[key] : GIO_BUY[key];
                             }
                           });
                         }

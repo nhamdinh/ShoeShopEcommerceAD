@@ -1,6 +1,8 @@
 export const getUserInfo = (state: any) => state.auth.userInfo;
 export const getChatNotices = (state: any) => state.productsReducer.userChatNotices;
 
+export const getArrBuy = (state: any) => state.thudungGiosReducer.arrBuy;
+export const getArrSell = (state: any) => state.thudungGiosReducer.arrSell;
 // custom dialog for confirm
 export const getDialogContent = (state: any) => state.dialog.content;
 export const getDialogTitle = (state: any) => state.dialog.title;
