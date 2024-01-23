@@ -33,7 +33,7 @@ const Sidebar = () => {
                 to="/thudung-list"
               >
                 <i className="icon fas fa-usd-circle"></i>
-                <span className="text">Thu Dung Pretty LIST</span>
+                <span className="text">Thu Dung Pretty LIST BÁN</span>
               </NavLink>
             </li>
             <li className="menu-item">
@@ -53,7 +53,27 @@ const Sidebar = () => {
                 to="/thudung-create-buy"
               >
                 <i className="icon fas fa-usd-circle"></i>
-                <span className="text">Thu Dung Pretty MUA</span>
+                <span className="text">Thu Dung Pretty NHẬP</span>
+              </NavLink>
+            </li>
+            <li className="menu-item">
+              <NavLink
+                // activeClassName="active"
+                className="menu-link "
+                to="/thudung-list-buy"
+              >
+                <i className="icon fas fa-usd-circle"></i>
+                <span className="text">Thu Dung Pretty LIST NHẬP</span>
+              </NavLink>
+            </li>
+            <li className="menu-item">
+              <NavLink
+                // activeClassName="active"
+                className="menu-link "
+                to="/thudung-sum"
+              >
+                <i className="icon fas fa-usd-circle"></i>
+                <span className="text">Thu Dung Pretty SUM</span>
               </NavLink>
             </li>
             <li className="menu-item">

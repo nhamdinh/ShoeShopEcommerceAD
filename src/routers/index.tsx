@@ -12,6 +12,8 @@ import ThuDungScreenAdd from "../screens/ThuDungScreenAdd";
 import ThuDungScreenBuy from "../screens/ThuDungScreenBuy";
 import ThuDungScreenDetail from "../screens/ThuDungScreenDetail";
 import ThuDungScreenList from "../screens/ThuDungScreenList";
+import ThuDungScreenListBuy from "../screens/ThuDungScreenListBuy";
+import ThuDungScreenSum from "../screens/ThuDungScreenSum";
 import UsersScreen from "../screens/UsersScreen";
 
 export const PrivateRoutes = [
@@ -38,6 +40,14 @@ export const PrivateRoutes = [
   {
     path: "/thudung-list",
     element: <ThuDungScreenList />,
+  },
+  {
+    path: "/thudung-list-buy",
+    element: <ThuDungScreenListBuy />,
+  },
+  {
+    path: "/thudung-sum",
+    element: <ThuDungScreenSum />,
   },
   {
     path: "/thudung-list/:id",

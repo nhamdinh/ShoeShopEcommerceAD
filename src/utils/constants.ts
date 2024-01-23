@@ -21,7 +21,7 @@ export const ToastObjects = {
 };
 export const GIO: any = {
   THUONG: 170,
-  THUONG__500G: 85,
+  THUONG_500G: 85,
   VIP: 210,
   VIP_500G: 105,
   BAP_CUON: 270,
@@ -29,4 +29,16 @@ export const GIO: any = {
   BAP_VAN: 280,
   GAN_NGAM: 110,
   BAP_NGAM: 150,
+};
+
+export const GIO_BUY: any = {
+  THUONG: 130,
+  THUONG_500G: 65,
+  VIP: 180,
+  VIP_500G: 90,
+  BAP_CUON: 180,
+  BAP_THUONG: 180,
+  BAP_VAN: 200,
+  GAN_NGAM: 65,
+  BAP_NGAM: 95,
 };

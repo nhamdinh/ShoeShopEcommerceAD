@@ -64,3 +64,7 @@ export const formatMoney = (text: any) => {
   }
   return text.toString().replace(REGEX_CURRENCY, "$1,");
 };
+export const findUniqueElements = (array1:any, array2:any) => {
+  const result = array1.filter((item:any) => !array2.includes(item));
+  return result;
+};
