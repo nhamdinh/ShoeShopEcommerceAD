@@ -22,8 +22,6 @@ export const ordersApi = createApi({
 
       return headers;
     },
-    credentials: "include",
-
   }),
   tagTypes: ["getOrderDetail__TAG"],
   endpoints: (builder) => ({
