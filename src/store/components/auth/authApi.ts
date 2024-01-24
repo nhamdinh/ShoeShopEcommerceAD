@@ -22,6 +22,8 @@ export const authApi = createApi({
 
       return headers;
     },
+    credentials: "include",
+
   }),
   tagTypes: ["getProfile__TAG", "getAllMember__TAG"],
   endpoints: (builder) => ({

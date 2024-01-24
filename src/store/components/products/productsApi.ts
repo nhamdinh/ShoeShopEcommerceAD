@@ -22,6 +22,7 @@ export const productsApi = createApi({
 
       return headers;
     },
+    credentials: "include",
   }),
   tagTypes: [
     "GetProducts",

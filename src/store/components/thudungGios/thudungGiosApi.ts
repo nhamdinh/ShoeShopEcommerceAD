@@ -22,6 +22,8 @@ export const thudungGiosApi = createApi({
 
       return headers;
     },
+    credentials: "include",
+
   }),
   tagTypes: ["getThudungGios__TAG"],
   endpoints: (builder) => ({
