@@ -1,4 +1,4 @@
-// export const API_LINK = "http://localhost:5000/api";
+// export const API_LINK = "http://104.154.49.183:5000/api";
 export const API_LINK = process.env.REACT_APP_BASE_API_URL;
 export const REACT_ENV = process.env.REACT_PUBLIC_ENVV;
 export const SOCKET_HOST = process.env.REACT_APP_SOCKET_HOST;
