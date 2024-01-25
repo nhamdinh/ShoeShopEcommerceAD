@@ -2,7 +2,7 @@ import {
   useGetThudungGiosQuery,
   useUpdatedOrderPayMutation,
 } from "../../store/components/thudungGios/thudungGiosApi";
-import { DATE_FORMAT, GIO, GIO_BUY } from "../../utils/constants";
+import { DATE_FORMAT, GIO, GIO_BUY, GIO_RENDER } from "../../utils/constants";
 import "./style.scss";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -93,7 +93,7 @@ export default function SumGio() {
       }, []);
       // console.log(keys);
 
-      findUniqueElements(Object.keys(GIO), keys).map(
+      findUniqueElements(Object.keys(GIO_RENDER), keys).map(
         (item: any, index: any) => {
           _dataSum.push({
             id: Date.now() + index,
@@ -174,7 +174,7 @@ export default function SumGio() {
       }, []);
       // console.log(keys);
 
-      findUniqueElements(Object.keys(GIO), keys).map(
+      findUniqueElements(Object.keys(GIO_RENDER), keys).map(
         (item: any, index: any) => {
           _dataSum.push({
             id: Date.now() + index,
@@ -238,6 +238,8 @@ export default function SumGio() {
       dataIndex: "label",
       ellipsis: true,
       align: "center",
+      render: (label) => <>{GIO_RENDER[label]}</>,
+
     },
 
     // {
@@ -274,6 +276,8 @@ export default function SumGio() {
       dataIndex: "label",
       ellipsis: true,
       align: "center",
+      render: (label) => <>{GIO_RENDER[label]}</>,
+
     },
 
     // {

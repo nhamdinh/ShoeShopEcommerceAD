@@ -42,3 +42,14 @@ export const GIO_BUY: any = {
   GAN_NGAM: 65,
   BAP_NGAM: 95,
 };
+export const GIO_RENDER: any = {
+  THUONG: "GIÒ THƯỜNG 1KG",
+  THUONG_500G: "GIÒ THƯỜNG 500G",
+  VIP: "GIÒ VIP 1KG",
+  VIP_500G: "GIÒ VIP 500G",
+  BAP_CUON: "BẮP CUỘN",
+  BAP_THUONG: "BẮP THƯỜNG",
+  BAP_VAN: "BẮP VÂN",
+  GAN_NGAM: "GÂN _NGÂM_",
+  BAP_NGAM: "BẮP _NGÂM_",
+};

@@ -2,7 +2,7 @@ import {
   useGetThudungGiosQuery,
   useUpdatedOrderPayMutation,
 } from "../../store/components/thudungGios/thudungGiosApi";
-import { DATE_FORMAT, GIO, GIO_BUY } from "../../utils/constants";
+import { DATE_FORMAT, GIO, GIO_BUY, GIO_RENDER } from "../../utils/constants";
 import "./style.scss";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
@@ -69,7 +69,7 @@ export default function ImportGio({ isBan }: any) {
       }, []);
       // console.log(keys);
 
-      findUniqueElements(Object.keys(GIO), keys).map(
+      findUniqueElements(Object.keys(GIO_RENDER), keys).map(
         (item: any, index: any) => {
           _dataSum.push({
             id: Date.now() + index,
@@ -138,7 +138,7 @@ export default function ImportGio({ isBan }: any) {
     const data = res?.data;
 
     if (data) {
-      console.log(data);
+      // console.log(data);
       dispatch(
         openToast({
           isOpen: Date.now(),
@@ -238,11 +238,11 @@ export default function ImportGio({ isBan }: any) {
                     </button>
                   </Col>
                 </Row>
-                {item?.orderItems.map((item: any, index: number) => {
+                {item?.orderItems.map((item: any, ind: number) => {
                   return (
-                    <Row key={index} gutter={16} className="mt20px">
+                    <Row key={ind} gutter={16} className="mt20px">
                       <Col className="gutter-row" span={6}>
-                        <h5 style={style}>{item.label}</h5>
+                        <h5 style={style}>{index + 1}.{ind+1}.{GIO_RENDER[item.label]}</h5>
                       </Col>
                       <Col className="gutter-row" span={6}>
                         <div style={style}>{item.quantity}</div>

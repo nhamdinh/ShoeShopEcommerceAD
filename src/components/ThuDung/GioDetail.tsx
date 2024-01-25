@@ -6,7 +6,13 @@ import "./style.scss";
 import { useEffect, useState } from "react";
 import { DatePicker, DatePickerProps } from "antd";
 import moment from "moment";
-import { DATE_FORMAT, RE_ONLY_NUMBER, GIO } from "../../utils/constants";
+import {
+  DATE_FORMAT,
+  RE_ONLY_NUMBER,
+  GIO,
+  GIO_RENDER,
+  GIO_BUY,
+} from "../../utils/constants";
 import EditVariant from "./EditVariant";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -17,6 +23,7 @@ export default function GioDetail() {
   const dispatch = useDispatch();
   const location = useLocation();
   const [orderId, setorderId] = useState<any>("");
+  const [isBan, setisBan] = useState<any>(true);
   const [orderDetail, setorderDetail] = useState<any>({});
   const [findThuDungGioById, { isLoading: aa, error: bb }] =
     useFindThuDungGioByIdMutation();
@@ -36,6 +43,7 @@ export default function GioDetail() {
       setmetadata(_orderDetail?.metadata);
       setValue(_orderDetail?.isPaid ? 1 : 2);
       setDataTable(_orderDetail?.orderItems);
+      setisBan(_orderDetail?.isBan);
       setorderDetail(_orderDetail);
     } else {
     }
@@ -226,8 +234,8 @@ export default function GioDetail() {
                 {
                   id: Date.now(),
                   label: "BAP_CUON",
-                  price: 270,
-                  quantity: "1",
+                  price: isBan ? GIO["BAP_CUON"] : GIO_BUY["BAP_CUON"],
+                  quantity: 1,
                 },
               ]);
             }}
@@ -251,9 +259,9 @@ export default function GioDetail() {
                         const final: any = { ...row };
                         if (row.id === id) {
                           final[key] = val;
-                          Object.keys(GIO).map((key) => {
+                          Object.keys(GIO_RENDER).map((key) => {
                             if (val === key) {
-                              final["price"] = GIO[key];
+                              final["price"] = isBan ? GIO[key] : GIO_BUY[key];
                             }
                           });
                         }
