@@ -8,7 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import { PrivateRoutes } from "./routers";
 import CustomDialog from "./components/customDialog";
 import Toast from "./components/LoadingError/Toast";
-import { REACT_ENV, SOCKET_HOST } from "./utils/constants";
+import { API_LINK, REACT_ENV, SOCKET_HOST } from "./utils/constants";
 import { useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { openToast } from "./store/components/customDialog/toastSlice";
@@ -18,6 +18,8 @@ import { useGetAllMemberQuery } from "./store/components/auth/authApi";
 
 const App = () => {
   console.log("env ::: ", REACT_ENV);
+  console.log(`API_LINK :::[${API_LINK}]`)
+
   const dispatch = useDispatch();
   const userInfo = useSelector(getUserInfo);
   const {

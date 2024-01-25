@@ -2,7 +2,7 @@
   "name": "shop-ecommerce",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000/api/",
+  "proxy": "http://104.154.49.183:5000/api/",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@emotion/react": "^11.9.3",
@@ -24,6 +24,8 @@
     "axios": "^0.27.2",
     "caver-js": "^1.8.2",
     "dotenv": "^16.0.1",
+    "dotenv-cli": "^6.0.0",
+    "env-cmd": "^10.1.0",
     "i18next": "^21.8.13",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -53,7 +55,8 @@
     "jquery": "^3.6.0"
   },
   "scripts": {
-    "start": "set PORT=4000 &&  react-scripts  --openssl-legacy-provider start",
+    "dev": "set PORT=4000&& set REACT_APP_API_URL=http://localhost:5000/api&& set REACT_APP_SOCKET_HOST=http://localhost:6000&& react-scripts  --openssl-legacy-provider start",
+    "start": "set PORT=4000&& set REACT_APP_API_URL=http://104.154.49.183:5000/api&& set REACT_APP_SOCKET_HOST=http://104.154.49.183:6000&& react-scripts  --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
