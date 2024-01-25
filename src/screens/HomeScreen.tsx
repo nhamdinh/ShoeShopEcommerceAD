@@ -5,13 +5,9 @@ import Sidebar from "./../components/Sidebar";
 
 const HomeScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <Main />
-      </main>
-    </>
+    <main className="main-wrap">
+      <Main />
+    </main>
   );
 };
 

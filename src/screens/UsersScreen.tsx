@@ -5,13 +5,9 @@ import UserComponent from "../components/users";
 
 const UsersScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <UserComponent />
-      </main>
-    </>
+    <main className="main-wrap">
+      <UserComponent />
+    </main>
   );
 };
 

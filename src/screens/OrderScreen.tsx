@@ -4,13 +4,9 @@ import OrderMain from "../components/orders/OrderMain";
 
 const OrderScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <OrderMain />
-      </main>
-    </>
+    <main className="main-wrap">
+      <OrderMain />
+    </main>
   );
 };
 

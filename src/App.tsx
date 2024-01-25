@@ -9,16 +9,18 @@ import { PrivateRoutes } from "./routers";
 import CustomDialog from "./components/customDialog";
 import Toast from "./components/LoadingError/Toast";
 import { API_LINK, REACT_ENV, SOCKET_HOST } from "./utils/constants";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 import { openToast } from "./store/components/customDialog/toastSlice";
 import { getUserInfo } from "./store/selector/RootSelector";
 import { setStoChatNotices } from "./store/components/products/productsSlice";
 import { useGetAllMemberQuery } from "./store/components/auth/authApi";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 
 const App = () => {
   console.log("env ::: ", REACT_ENV);
-  console.log(`API_LINK :::[${API_LINK}]`)
+  console.log(`API_LINK :::[${API_LINK}]`);
 
   const dispatch = useDispatch();
   const userInfo = useSelector(getUserInfo);
@@ -68,9 +70,21 @@ const App = () => {
       socketRef.current.disconnect();
     };
   }, [userInfo]);
-
+  const [showSideBar, setshowSideBar] = useState<any>(false);
   return (
     <div className="app-wrapper">
+      <Sidebar
+        showSideBar={showSideBar}
+        cb_setshowSideBar={(val: any) => {
+          setshowSideBar(val);
+        }}
+      />
+      <Header
+        cb_setshowSideBar={(val: any) => {
+          setshowSideBar(val);
+        }}
+      />
+
       <Routes>
         {PrivateRoutes.map((item: any, index) => (
           <Route key={index} path={item.path} element={item.element} />

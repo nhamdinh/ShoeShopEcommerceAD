@@ -5,12 +5,8 @@ import MainProducts from "../components/Products/MainProducts";
 import SumGio from "../components/ThuDung/SumGio";
 export default function ThuDungScreenSum() {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <SumGio />
-      </main>
-    </>
+    <main className="main-wrap">
+      <SumGio />
+    </main>
   );
 }

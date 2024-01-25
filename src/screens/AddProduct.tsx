@@ -5,13 +5,9 @@ import AddProductMain from "../components/Products/AddProductMain";
 
 const AddProduct = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <AddProductMain />
-      </main>
-    </>
+    <main className="main-wrap">
+      <AddProductMain />
+    </main>
   );
 };
 

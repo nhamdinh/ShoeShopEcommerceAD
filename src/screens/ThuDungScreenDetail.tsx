@@ -5,12 +5,8 @@ import MainProducts from "../components/Products/MainProducts";
 import GioDetail from "../components/ThuDung/GioDetail";
 export default function ThuDungScreenDetail() {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <GioDetail />
-      </main>
-    </>
+    <main className="main-wrap">
+      <GioDetail />
+    </main>
   );
 }

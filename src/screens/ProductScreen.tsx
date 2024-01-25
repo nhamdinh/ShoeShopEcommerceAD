@@ -5,13 +5,9 @@ import MainProducts from "../components/Products/MainProducts";
 
 const ProductScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <MainProducts />
-      </main>
-    </>
+    <main className="main-wrap">
+      <MainProducts />
+    </main>
   );
 };
 

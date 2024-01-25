@@ -5,13 +5,9 @@ import Sidebar from "../components/Sidebar";
 
 const CategoriesScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <MainCategories />
-      </main>
-    </>
+    <main className="main-wrap">
+      <MainCategories />
+    </main>
   );
 };
 

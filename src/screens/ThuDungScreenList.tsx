@@ -5,12 +5,8 @@ import MainProducts from "../components/Products/MainProducts";
 import ImportGio from "../components/ThuDung/ImportGio";
 export default function ThuDungScreenList() {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <ImportGio isBan={true} />
-      </main>
-    </>
+    <main className="main-wrap">
+      <ImportGio isBan={true} />
+    </main>
   );
 }

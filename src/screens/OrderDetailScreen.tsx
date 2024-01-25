@@ -13,13 +13,9 @@ const OrderDetailScreen = () => {
   }, [location.pathname]);
 
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <OrderDetailmain orderId={orderId} />
-      </main>
-    </>
+    <main className="main-wrap">
+      <OrderDetailmain orderId={orderId} />
+    </main>
   );
 };
 

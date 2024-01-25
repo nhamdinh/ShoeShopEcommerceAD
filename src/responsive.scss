@@ -49,6 +49,9 @@
     overflow-x: hidden;
     transition: visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
   }
+  .navbar-aside.showzz {
+    transform: translateX(0);
+  }
   .navbar-aside .aside-top .logo {
     height: 40px;
   }

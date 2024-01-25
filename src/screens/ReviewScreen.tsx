@@ -4,13 +4,9 @@ import Sidebar from "../components/Sidebar";
 
 const ReviewScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <ReviewMain />
-      </main>
-    </>
+    <main className="main-wrap">
+      <ReviewMain />
+    </main>
   );
 };
 

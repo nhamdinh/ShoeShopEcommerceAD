@@ -8,29 +8,30 @@ import { useGetProfileQuery } from "../store/components/auth/authApi";
 import { LANG_STORAGE } from "../utils/constants";
 var $ = require("jquery");
 
-const Header = () => {
+const Header = ({ cb_setshowSideBar }: any) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
-  useEffect(() => {
-    $("[data-trigger]").on("click", function (e: any) {
-      e.preventDefault();
-      e.stopPropagation();
-      var offcanvas_id = $().attr("data-trigger");
-      $(offcanvas_id).toggleClass("show");
-    });
+  // useEffect(() => {
+  //   $("[data-trigger]").on("click", function (e: any) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     //@ts-ignore
+  //     var offcanvas_id = $(this).attr("data-trigger");
+  //     $(offcanvas_id).toggleClass("show");
+  //   });
 
-    $(".btn-aside-minimize").on("click", function () {
-      if (window.innerWidth < 768) {
-        $("body").removeClass("aside-mini");
-        $(".navbar-aside").removeClass("show");
-      } else {
-        // minimize sidebar on desktop
-        $("body").toggleClass("aside-mini");
-      }
-    });
-  }, []);
+  //   $(".btn-aside-minimize").on("click", function () {
+  //     if (window.innerWidth < 768) {
+  //       $("body").removeClass("aside-mini");
+  //       $(".navbar-aside").removeClass("show");
+  //     } else {
+  //       // minimize sidebar on desktop
+  //       $("body").toggleClass("aside-mini");
+  //     }
+  //   });
+  // }, []);
 
   const logoutHandler = () => {
     dispatch(userLogout());
@@ -71,10 +72,7 @@ const Header = () => {
   return (
     <header className="main-header navbar">
       <div className="col-search">
-        <div>
-          {" "}
-          {t("hello")} &ensp; <span className="userInfo">{userInfo?.name}</span>
-        </div>
+        {t("hello")} &ensp; <span className="userInfo">{userInfo?.name}</span>
         {/* <form className="searchform">
           <div className="input-group">
             <input
@@ -98,7 +96,9 @@ const Header = () => {
       <div className="col-nav">
         <button
           className="btn btn-icon btn-mobile me-auto"
-          data-trigger="#offcanvas_aside"
+          onClick={() => {
+            cb_setshowSideBar(true);
+          }}
         >
           <i className="md-28 fas fa-bars"></i>
         </button>

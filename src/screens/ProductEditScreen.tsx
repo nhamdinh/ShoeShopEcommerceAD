@@ -5,13 +5,9 @@ import EditProductMain from "../components/Products/EditproductMain";
 
 const ProductEditScreen = () => {
   return (
-    <>
-      <Sidebar />
-      <main className="main-wrap">
-        <Header />
-        <EditProductMain />
-      </main>
-    </>
+    <main className="main-wrap">
+      <EditProductMain />
+    </main>
   );
 };
 export default ProductEditScreen;
