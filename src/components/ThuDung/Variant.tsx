@@ -15,16 +15,21 @@ import {
   notification,
 } from "antd";
 import moment from "moment";
-import { DATE_FORMAT, RE_ONLY_NUMBER, GIO } from "../../utils/constants";
+import {
+  DATE_FORMAT,
+  RE_ONLY_NUMBER,
+  GIO,
+  GIO_RENDER,
+} from "../../utils/constants";
 import { formatMoney } from "../../utils/commonFunction";
 
 export default function Variant({ variant, cb_delTable, cb_setTable }: any) {
   const [options, setoptions] = useState<any>(
-    Object.keys(GIO).map((key) => {
+    Object.keys(GIO_RENDER).map((key) => {
       return {
         label: (
           <div className="opt-lbl">
-            <span>{key}</span>
+            <span>{GIO_RENDER[key]}</span>
           </div>
         ),
         value: key,
@@ -79,7 +84,7 @@ export default function Variant({ variant, cb_delTable, cb_setTable }: any) {
           SỐ LƯỢNG
         </label>
         <input
-          //   type="number"
+          type="number"
           placeholder="so luong"
           className="form-control"
           id="product_price"
@@ -89,9 +94,10 @@ export default function Variant({ variant, cb_delTable, cb_setTable }: any) {
             let numInput = e.target.value;
             numInput = numInput.replaceAll(",", "");
             if (numInput.length < 7)
-              if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
-                cb_setTable(variant?.id, "quantity", +numInput);
-              }
+              cb_setTable(variant?.id, "quantity", +numInput);
+
+            if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
+            }
           }}
         />
       </div>

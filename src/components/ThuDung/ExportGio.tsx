@@ -20,6 +20,7 @@ import {
   RE_ONLY_NUMBER,
   GIO,
   GIO_BUY,
+  GIO_RENDER,
 } from "../../utils/constants";
 import Variant from "./Variant";
 import {
@@ -218,7 +219,7 @@ export default function ExportGio({ isBan }: any) {
                   id: Date.now(),
                   label: "BAP_CUON",
                   price: isBan ? GIO["BAP_CUON"] : GIO_BUY["BAP_CUON"],
-                  quantity: "1",
+                  quantity: 1,
                 },
               ]);
             }}
@@ -242,7 +243,7 @@ export default function ExportGio({ isBan }: any) {
                         const final: any = { ...row };
                         if (row.id === id) {
                           final[key] = val;
-                          Object.keys(isBan ? GIO : GIO_BUY).map((key) => {
+                          Object.keys(GIO_RENDER).map((key) => {
                             if (val === key) {
                               final["price"] = isBan ? GIO[key] : GIO_BUY[key];
                             }
