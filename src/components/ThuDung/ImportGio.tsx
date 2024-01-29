@@ -95,9 +95,11 @@ export default function ImportGio({ isBan }: any) {
 
       setDataSum(_dataSum);
 
+      const _dataTableKoBieu = _dataTable.filter((item: any) => !item?.isGif);
+
       let _totalOrderNot = 0;
       settotalAmount(
-        _dataTable.reduce(
+        _dataTableKoBieu.reduce(
           (acc: any, item1: any) => {
             if (item1?.isPaid) {
               const totalOrder = item1?.orderItems.reduce(
@@ -196,13 +198,17 @@ export default function ImportGio({ isBan }: any) {
          */}
         <div className="card-body">
           {dataTable.map((item: any, index: number) => {
-            const totalOrder = item?.orderItems.reduce(
-              (acc: any, item: any) => {
-                acc = +acc + +item.price * +item.quantity;
-                return acc;
-              },
-              [0]
-            );
+            let totalOrder = 0;
+            if (!item?.isGif) {
+              totalOrder = item?.orderItems.reduce(
+                (acc: any, item: any) => {
+                  acc = +acc + +item.price * +item.quantity;
+                  return acc;
+                },
+                [0]
+              );
+            }
+
             return (
               <div key={item?._id} className="mt20px">
                 <Row gutter={16} key={item?._id} className="mt20px">
@@ -211,7 +217,7 @@ export default function ImportGio({ isBan }: any) {
                   </Col>
                   <Col
                     onClick={() => {
-                      navigate(`/thudung-list/${item?._id}`);
+                      navigate(`/thudung-list/${item?._id}?isBan=${item?.isBan}`);
                     }}
                     className="gutter-row cursor__pointer"
                     span={6}
@@ -242,7 +248,9 @@ export default function ImportGio({ isBan }: any) {
                   return (
                     <Row key={ind} gutter={16} className="mt20px">
                       <Col className="gutter-row" span={6}>
-                        <h5 style={style}>{index + 1}.{ind+1}.{GIO_RENDER[item.label]}</h5>
+                        <h5 style={style}>
+                          {index + 1}.{ind + 1}.{GIO_RENDER[item.label]}
+                        </h5>
                       </Col>
                       <Col className="gutter-row" span={6}>
                         <div style={style}>{item.quantity}</div>
@@ -265,7 +273,7 @@ export default function ImportGio({ isBan }: any) {
                   <Col className="gutter-row" span={6}></Col>
                   <Col className="gutter-row" span={6}></Col>
                   <Col className="gutter-row df content__end" span={6}>
-                    <div style={style}>{formatMoney(totalOrder)}</div>
+                    <h5 style={style}>{formatMoney(totalOrder)}</h5>
                   </Col>
                 </Row>
                 <Divider orientation="left"></Divider>

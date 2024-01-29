@@ -33,7 +33,9 @@ export default function SumGio() {
 
   const [dataTable, setDataTable] = useState<any>([]);
   const [dataSumBuy, setDataSumBuy] = useState<any>([]);
+  const [countSumBuy, setCountDataSumBuy] = useState<any>(0);
   const [dataSumSell, setDataSumSell] = useState<any>([]);
+  const [countSumSell, setCountDataSumSell] = useState<any>(0);
 
   const [show, setShow] = useState<any>(false);
   const [totalAmount, settotalAmount] = useState<any>(0);
@@ -103,6 +105,10 @@ export default function SumGio() {
           });
         }
       );
+      setCountDataSumSell(
+        _dataSum.reduce((acc: any, item: any) => +acc + +item.quantity, [0])
+      );
+
       setDataSumSell(
         _dataSum.sort((aa: any, bb: any) =>
           aa.label > bb.label ? 1 : aa.label < bb.label ? -1 : 0
@@ -184,6 +190,9 @@ export default function SumGio() {
           });
         }
       );
+      setCountDataSumBuy(
+        _dataSum.reduce((acc: any, item: any) => +acc + +item.quantity, [0])
+      );
       setDataSumBuy(
         _dataSum.sort((aa: any, bb: any) =>
           aa.label > bb.label ? 1 : aa.label < bb.label ? -1 : 0
@@ -227,20 +236,20 @@ export default function SumGio() {
 
   const columns2: ColumnsType<DataType> = [
     {
-      title: "quantity",
+      title: "quantity BÁN",
       dataIndex: "quantity",
       // ellipsis: true,
       align: "center",
     },
 
-    {
-      title: "label",
-      dataIndex: "label",
-      ellipsis: true,
-      align: "center",
-      render: (label) => <>{GIO_RENDER[label]}</>,
+    // {
+    //   title: "label",
+    //   dataIndex: "label",
+    //   ellipsis: true,
+    //   align: "center",
+    //   render: (label) => <>{GIO_RENDER[label]}</>,
 
-    },
+    // },
 
     // {
     //   title: "price",
@@ -248,16 +257,16 @@ export default function SumGio() {
     //   // ellipsis: true,
     //   align: "center",
     // },
-    {
-      title: "No.",
-      dataIndex: "id",
-      key: "id",
-      ellipsis: true,
-      //   sorter: true,
-      //   showSorterTooltip: false,
-      align: "center",
-      render: (_, __, index: any) => <>{index + 1}</>,
-    },
+    // {
+    //   title: "No.",
+    //   dataIndex: "id",
+    //   key: "id",
+    //   ellipsis: true,
+    //   //   sorter: true,
+    //   //   showSorterTooltip: false,
+    //   align: "center",
+    //   render: (_, __, index: any) => <>{index + 1}</>,
+    // },
   ];
 
   const columns1: ColumnsType<DataType> = [
@@ -277,7 +286,6 @@ export default function SumGio() {
       ellipsis: true,
       align: "center",
       render: (label) => <>{GIO_RENDER[label]}</>,
-
     },
 
     // {
@@ -287,7 +295,7 @@ export default function SumGio() {
     //   align: "center",
     // },
     {
-      title: "quantity",
+      title: "quantity NHẬP",
       dataIndex: "quantity",
       // ellipsis: true,
       align: "center",
@@ -326,7 +334,7 @@ export default function SumGio() {
          */}
         <div className="card-body">
           <Row gutter={16} className="mt20px">
-            <Col className="gutter-row" span={12}>
+            <Col className="gutter-row" span={18}>
               <h3>NHẬP</h3>
               <Table
                 className="AdminManagement__table"
@@ -357,7 +365,7 @@ export default function SumGio() {
                 pagination={false}
               />
             </Col>
-            <Col className="gutter-row " span={12}>
+            <Col className="gutter-row " span={6}>
               <h3>BÁN</h3>
               <Table
                 className="AdminManagement__table"
@@ -387,6 +395,21 @@ export default function SumGio() {
                 // pagination={{ pageSize: 1000 }}
                 pagination={false}
               />
+            </Col>
+          </Row>
+
+          <Row gutter={16} className="mt20px">
+            <Col className="gutter-row" span={12}></Col>
+            <Col className="gutter-row " span={6}>
+              <h4 className="df content__center">{countSumBuy}</h4>
+            </Col>
+            <Col className="gutter-row " span={6}></Col>
+          </Row>
+          <Row gutter={16} className="mt20px">
+            <Col className="gutter-row" span={12}></Col>
+            <Col className="gutter-row " span={6}></Col>
+            <Col className="gutter-row " span={6}>
+              <h4 className="df content__center">{countSumSell}</h4>
             </Col>
           </Row>
         </div>

@@ -15,11 +15,17 @@ import {
 } from "../../utils/constants";
 import EditVariant from "./EditVariant";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { RadioChangeEvent } from "antd";
 import { Radio } from "antd";
 import { openToast } from "../../store/components/customDialog/toastSlice";
+import type { CheckboxProps } from "antd";
+
+import { Checkbox } from "antd";
+
 export default function GioDetail() {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const location = useLocation();
   const [orderId, setorderId] = useState<any>("");
@@ -44,6 +50,7 @@ export default function GioDetail() {
       setValue(_orderDetail?.isPaid ? 1 : 2);
       setDataTable(_orderDetail?.orderItems);
       setisBan(_orderDetail?.isBan);
+      setisGif(_orderDetail?.isGif ?? false);
       setorderDetail(_orderDetail);
     } else {
     }
@@ -68,6 +75,8 @@ export default function GioDetail() {
   const [sellDate, setSellDate] = useState<any>(
     moment(new Date()).format(DATE_FORMAT)
   );
+  const [isGif, setisGif] = useState<any>(false);
+
   const [buyName, setBuyName] = useState<any>("");
   const [address, setaddress] = useState<any>("");
   const [phone, setphone] = useState<any>("");
@@ -94,6 +103,7 @@ export default function GioDetail() {
 
     if (data) {
       console.log(data);
+      navigate(-1);
       dispatch(
         openToast({
           isOpen: Date.now(),
@@ -119,6 +129,7 @@ export default function GioDetail() {
         id: orderId,
         objectParams: {
           buyName,
+          isGif,
           sellDate,
           metadata,
           address,
@@ -129,11 +140,13 @@ export default function GioDetail() {
         },
       });
   };
-
+  const onChange1: CheckboxProps["onChange"] = (e) => {
+    setisGif(e.target.checked);
+  };
   return (
     <section className="content-main">
       <div className="content-header">
-        <h2 className="content-title">CHI TIẾT ĐƠN</h2>
+        <h2 className="content-title">CHI TIẾT ĐƠN {location.search.split("=")[1]==="true" ? " BÁN" : " NHẬP"}</h2>
       </div>
 
       <div className="card mb-4 shadow-sm">
@@ -168,7 +181,14 @@ export default function GioDetail() {
               onChange={(e) => setBuyName(e.target.value)}
             />
           </div>
-
+          <div className="mb-4">
+            <h5 className="form-label">BIẾU</h5>
+            <div>
+              <Checkbox checked={isGif} onChange={onChange1}>
+                BIẾU
+              </Checkbox>
+            </div>
+          </div>
           <div className="mb-4">
             <h6 className="form-label">THANH TOÁN</h6>
             <div>
