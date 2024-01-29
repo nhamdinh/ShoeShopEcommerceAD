@@ -12,7 +12,7 @@ import {
   Select,
   Spin,
   Typography,
-  notification,
+  Checkbox,
 } from "antd";
 import moment from "moment";
 import {
@@ -31,10 +31,11 @@ import { openToast } from "../../store/components/customDialog/toastSlice";
 import { useDispatch } from "react-redux";
 import type { RadioChangeEvent } from "antd";
 import { Radio } from "antd";
+import type { CheckboxProps } from "antd";
 
 export default function ExportGio({ isBan }: any) {
   const dispatch = useDispatch();
-  const [value, setValue] = useState<any>(1);
+  const [value, setValue] = useState<any>(2);
 
   const onChange = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
@@ -44,6 +45,7 @@ export default function ExportGio({ isBan }: any) {
     moment(new Date()).format(DATE_FORMAT)
   );
   const [buyName, setBuyName] = useState<any>("");
+  const [isGif, setisGif] = useState<any>(false);
   const [address, setaddress] = useState<any>("");
   const [phone, setphone] = useState<any>("");
   const [metadata, setmetadata] = useState<any>("");
@@ -65,8 +67,9 @@ export default function ExportGio({ isBan }: any) {
     e.preventDefault();
     if (isValid())
       onCreateThudungGio({
-        newModelArr: {
+        newModel: {
           isBan,
+          isGif,
           buyName: buyName ? buyName : "DUNG",
           sellDate,
           metadata,
@@ -78,9 +81,23 @@ export default function ExportGio({ isBan }: any) {
         },
       });
   };
-
+  const onChange1: CheckboxProps["onChange"] = (e) => {
+    setisGif(e.target.checked);
+  };
   const [createThudungGio, { isLoading: aa, error: bb }] =
     useCreateThudungGioMutation();
+
+  const reset = () => {
+    setDataTable([]);
+    setBuyName("");
+    setSellDate(moment(new Date()).format(DATE_FORMAT));
+    setDisplayFrom(moment(new Date(Date.now()), DATE_FORMAT));
+    setisGif(false);
+    setValue(2);
+    setaddress("");
+    setphone("");
+    setmetadata("");
+  };
 
   const onCreateThudungGio = async (values: any) => {
     const res = await createThudungGio(values);
@@ -88,10 +105,7 @@ export default function ExportGio({ isBan }: any) {
     const data = res?.data;
 
     if (data) {
-      setDataTable([]);
-      setBuyName("");
-      setSellDate(moment(new Date()).format(DATE_FORMAT));
-      setDisplayFrom(moment(new Date(Date.now()), DATE_FORMAT));
+      reset();
 
       dispatch(
         openToast({
@@ -151,6 +165,15 @@ export default function ExportGio({ isBan }: any) {
               value={buyName}
               onChange={(e) => setBuyName(e.target.value)}
             />
+          </div>
+
+          <div className="mb-4">
+            <h5 className="form-label">BIẾU</h5>
+            <div>
+              <Checkbox checked={isGif} onChange={onChange1}>
+                BIẾU
+              </Checkbox>
+            </div>
           </div>
 
           <div className="mb-4">
