@@ -29,8 +29,8 @@ export default function SumGio() {
   const [countSumSell, setCountDataSumSell] = useState<any>(0);
 
   const [show, setShow] = useState<any>(false);
-  const [totalAmount, settotalAmount] = useState<any>(0);
-  const [totalOrderNot, settotalOrderNot] = useState<any>(0);
+  const [totalAmountPaid, setTotalAmountPaid] = useState<any>(0);
+  const [totalAmountUnPaid, setTotalAmountUnPaid] = useState<any>(0);
   const {
     data: dataSell,
     error: errorSell,
@@ -108,7 +108,7 @@ export default function SumGio() {
       //   setDataSum(_dataSum);
 
       let _totalOrderNot = 0;
-      settotalAmount(
+      setTotalAmountPaid(
         _dataTable.reduce(
           (acc: any, item1: any) => {
             if (item1?.isPaid) {
@@ -136,7 +136,7 @@ export default function SumGio() {
           [0]
         )
       );
-      settotalOrderNot(_totalOrderNot);
+      setTotalAmountUnPaid(_totalOrderNot);
       setDataTable(_dataTable);
     }
   }, [dataSell]);
@@ -192,7 +192,7 @@ export default function SumGio() {
       //   setDataSum(_dataSum);
 
       let _totalOrderNot = 0;
-      settotalAmount(
+      setTotalAmountPaid(
         _dataTable.reduce(
           (acc: any, item1: any) => {
             if (item1?.isPaid) {
@@ -220,7 +220,7 @@ export default function SumGio() {
           [0]
         )
       );
-      settotalOrderNot(_totalOrderNot);
+      setTotalAmountUnPaid(_totalOrderNot);
       setDataTable(_dataTable);
     }
   }, [dataBuy]);

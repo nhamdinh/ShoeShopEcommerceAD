@@ -59,9 +59,12 @@ export default function ImportGio({ isBan }: any) {
   const [dataTable, setDataTable] = useState<any>([]);
   const [dataTableRender, setDataTableRender] = useState<any>([]);
   const [show, setShow] = useState<any>(false);
+  const [totalObj, setTotalObj] = useState<any>({
+    totalAmountPaid: 0,
+    totalAmountUnPaid: 0,
+    discount: 0,
+  });
 
-  const [totalAmount, settotalAmount] = useState<any>(0);
-  const [totalOrderNot, settotalOrderNot] = useState<any>(0);
   const {
     data: data1,
     error,
@@ -136,38 +139,35 @@ export default function ImportGio({ isBan }: any) {
       );
 
       const _dataTableKoBieu = _dataTable.filter((item: any) => !item?.isGif);
-
-      let _totalOrderNot = 0;
-      settotalAmount(
-        _dataTableKoBieu.reduce(
-          (acc: any, item1: any) => {
-            console.log(+item1.discount);
-            if (item1?.isPaid) {
-              const totalOrder = item1?.orderItems.reduce(
-                (acc: any, item22: any) => {
-                  acc = +acc + +item22.price * +item22.quantity;
-                  return acc;
-                },
-                [0]
-              );
-              return (acc = +acc + +totalOrder);
-            } else {
-              const not = item1?.orderItems.reduce(
-                (acc: any, item22: any) => {
-                  acc = +acc + +item22.price * +item22.quantity;
-                  return acc;
-                },
-                [0]
-              );
-
-              _totalOrderNot = +not + +_totalOrderNot;
-              return acc;
-            }
-          },
-          [0]
-        )
-      );
-      settotalOrderNot(_totalOrderNot);
+      const _totalObj = {
+        totalAmountPaid: 0,
+        totalAmountUnPaid: 0,
+        discount: 0,
+      };
+      _dataTableKoBieu.map((item1: any) => {
+        _totalObj.discount = +_totalObj.discount + +(item1?.discount ?? 0);
+        if (item1?.isPaid) {
+          const amountPaid = item1?.orderItems.reduce(
+            (acc22: any, item22: any) => {
+              acc22 = +acc22 + +item22.price * +item22.quantity;
+              return acc22;
+            },
+            [0]
+          );
+          _totalObj.totalAmountPaid = +_totalObj.totalAmountPaid + +amountPaid;
+        } else {
+          const amountUnPaid = item1?.orderItems.reduce(
+            (acc22: any, item22: any) => {
+              acc22 = +acc22 + +item22.price * +item22.quantity;
+              return acc22;
+            },
+            [0]
+          );
+          _totalObj.totalAmountUnPaid =
+            +_totalObj.totalAmountUnPaid + +amountUnPaid;
+        }
+      });
+      setTotalObj(_totalObj);
       setDataTable(_dataTable);
     }
   }, [data1]);
@@ -226,9 +226,18 @@ export default function ImportGio({ isBan }: any) {
       </div>
       <h5 className={show ? "df" : "dn"}>
         <div className="color__ff4545">{data1?.metadata?.totalCount}</div>
-        <div> | {formatMoney(totalAmount)} + </div>
-        <div className="color__ff4545">{formatMoney(totalOrderNot)}</div>
-        <div> = {formatMoney(+totalOrderNot + +totalAmount)}</div>
+        <div> | {formatMoney(totalObj?.totalAmountPaid)} + </div>
+        <div className="color__ff4545">
+          {formatMoney(totalObj?.totalAmountUnPaid)} -
+        </div>
+        <div className="color__green">{formatMoney(totalObj?.discount)} =</div>
+        <div>
+          {formatMoney(
+            +totalObj?.totalAmountUnPaid +
+              +totalObj?.totalAmountPaid -
+              +totalObj?.discount
+          )}
+        </div>
         {/* {t("Products")} */}
       </h5>
       <div className="df items__center mt10px">
