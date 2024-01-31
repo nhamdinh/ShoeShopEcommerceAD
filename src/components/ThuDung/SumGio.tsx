@@ -1,21 +1,12 @@
-import {
-  useGetThudungGiosQuery,
-  useUpdatedOrderPayMutation,
-} from "../../store/components/thudungGios/thudungGiosApi";
-import { DATE_FORMAT, GIO, GIO_BUY, GIO_RENDER } from "../../utils/constants";
+import { useGetThudungGiosQuery } from "../../store/components/thudungGios/thudungGiosApi";
+import { GIO, GIO_BUY, GIO_RENDER } from "../../utils/constants";
 import "./style.scss";
 import React, { useEffect, useState } from "react";
-import moment from "moment";
-import { Col, Divider, Row } from "antd";
-import { findUniqueElements, formatMoney } from "../../utils/commonFunction";
-import { openToast } from "../../store/components/customDialog/toastSlice";
+import { Col, Row } from "antd";
+import { findUniqueElements } from "../../utils/commonFunction";
 import { useDispatch } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  st_setArrBuy,
-  st_setArrSell,
-} from "../../store/components/thudungGios/thudungGiosSlice";
-import { Table, Checkbox } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 interface DataType {
@@ -236,7 +227,7 @@ export default function SumGio() {
 
   const columns2: ColumnsType<DataType> = [
     {
-      title: "quantity BÁN",
+      title: "sl BÁN",
       dataIndex: "quantity",
       // ellipsis: true,
       align: "center",
@@ -295,7 +286,7 @@ export default function SumGio() {
     //   align: "center",
     // },
     {
-      title: "quantity NHẬP",
+      title: "sl NHẬP",
       dataIndex: "quantity",
       // ellipsis: true,
       align: "center",

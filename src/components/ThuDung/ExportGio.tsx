@@ -46,6 +46,7 @@ export default function ExportGio({ isBan }: any) {
   );
   const [buyName, setBuyName] = useState<any>("");
   const [isGif, setisGif] = useState<any>(false);
+  const [discount, setDiscount] = useState<any>(0);
   const [address, setaddress] = useState<any>("");
   const [phone, setphone] = useState<any>("");
   const [metadata, setmetadata] = useState<any>("");
@@ -70,6 +71,7 @@ export default function ExportGio({ isBan }: any) {
         newModel: {
           isBan,
           isGif,
+          discount,
           buyName: buyName ? buyName : "DUNG",
           sellDate,
           metadata,
@@ -142,6 +144,7 @@ export default function ExportGio({ isBan }: any) {
             onClick={submitHandler}
             disabled={!isValid()}
           >
+            {aa && <Spin size="large"></Spin>}
             Publish now
           </button>
           <div className="mb-4 mt20px">
@@ -213,6 +216,25 @@ export default function ExportGio({ isBan }: any) {
                 if (numInput.length < 13)
                   if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
                     setphone(e.target.value);
+                  }
+              }}
+            />
+          </div>
+
+          <div className="mb-4">
+            <h6 className="form-label">GIẢM GIÁ</h6>
+            <input
+              type="number"
+              placeholder="GIẢM GIÁ"
+              className="form-control"
+              id="product_title"
+              required
+              value={discount}
+              onChange={(e) => {
+                const numInput = e.target.value;
+                if (numInput.length < 7)
+                  if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
+                    setDiscount(e.target.value);
                   }
               }}
             />

@@ -2,29 +2,64 @@ import {
   useGetThudungGiosQuery,
   useUpdatedOrderPayMutation,
 } from "../../store/components/thudungGios/thudungGiosApi";
-import { DATE_FORMAT, GIO, GIO_BUY, GIO_RENDER } from "../../utils/constants";
+import { GIO, GIO_BUY, GIO_RENDER, PAGE_SIZE_10 } from "../../utils/constants";
 import "./style.scss";
 import React, { useEffect, useState } from "react";
-import moment from "moment";
-import { Col, Divider, Row } from "antd";
+import { Col, Divider, Row, Select, Spin } from "antd";
 import { findUniqueElements, formatMoney } from "../../utils/commonFunction";
 import { openToast } from "../../store/components/customDialog/toastSlice";
 import { useDispatch } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  st_setArrBuy,
-  st_setArrSell,
-} from "../../store/components/thudungGios/thudungGiosSlice";
+import { useNavigate } from "react-router-dom";
+import AdminPagination from "../adminPagination/AdminPagination";
+import { Input } from "antd";
 
 const style: React.CSSProperties = { background: "#FFFFFF", padding: "8px 0" };
+
+const options = [
+  {
+    label: (
+      <div className="opt-lbl">
+        <span>All</span>
+      </div>
+    ),
+    value: 0,
+  },
+  {
+    label: (
+      <div className="opt-lbl">
+        <span>Chưa</span>
+      </div>
+    ),
+    value: -1,
+  },
+  {
+    label: (
+      <div className="opt-lbl">
+        <span>Rồi</span>
+      </div>
+    ),
+    value: 1,
+  },
+];
 
 export default function ImportGio({ isBan }: any) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [currentPage, setCurrentPage] = useState<any>(1);
+  const [keySearch, setKeySearch] = useState<any>("");
+  const [params, setParams] = useState<any>({
+    limit: PAGE_SIZE_10,
+    offset: 0,
+    isPaid: 0,
+    keySearch,
+  });
+  const [goSearch, setGoSearch] = useState<any>(new Date().getTime());
+
   const [dataTable, setDataTable] = useState<any>([]);
-  const [dataSum, setDataSum] = useState<any>([]);
+  const [dataTableRender, setDataTableRender] = useState<any>([]);
   const [show, setShow] = useState<any>(false);
+
   const [totalAmount, settotalAmount] = useState<any>(0);
   const [totalOrderNot, settotalOrderNot] = useState<any>(0);
   const {
@@ -33,12 +68,32 @@ export default function ImportGio({ isBan }: any) {
     isSuccess,
     isLoading,
   } = useGetThudungGiosQuery(
-    { isBan },
+    {
+      isBan,
+      limit: 1000,
+      skip: 0,
+      isPaid: params.isPaid,
+      keySearch: params.keySearch,
+    },
     {
       refetchOnMountOrArgChange: true,
       skip: false,
     }
   );
+  useEffect(() => {
+    const _dataTableRender: any = [];
+
+    for (
+      let i = params.offset;
+      i < dataTable.length && i < +params.offset + +params.limit;
+      i++
+    ) {
+      _dataTableRender.push(dataTable[i]);
+    }
+
+    setDataTableRender(_dataTableRender);
+  }, [dataTable, params]);
+
   useEffect(() => {
     if (isSuccess) {
       const _dataTable = data1?.metadata?.thuDungGios;
@@ -79,21 +134,6 @@ export default function ImportGio({ isBan }: any) {
           });
         }
       );
-      if (isBan) {
-        dispatch(
-          st_setArrSell({
-            arrSell: [..._dataSum],
-          })
-        );
-      } else {
-        dispatch(
-          st_setArrBuy({
-            arrBuy: [..._dataSum],
-          })
-        );
-      }
-
-      setDataSum(_dataSum);
 
       const _dataTableKoBieu = _dataTable.filter((item: any) => !item?.isGif);
 
@@ -101,6 +141,7 @@ export default function ImportGio({ isBan }: any) {
       settotalAmount(
         _dataTableKoBieu.reduce(
           (acc: any, item1: any) => {
+            console.log(+item1.discount);
             if (item1?.isPaid) {
               const totalOrder = item1?.orderItems.reduce(
                 (acc: any, item22: any) => {
@@ -159,19 +200,17 @@ export default function ImportGio({ isBan }: any) {
     }
   };
 
+  const onSearch = (key: string, val: any) => {
+    const final = { ...params, limit: PAGE_SIZE_10, offset: 0 };
+    final[key] = val;
+    setParams(final);
+
+    setCurrentPage(1);
+  };
   return (
     <section className="content-main">
       <div className="content-header ">
-        <h2
-          className="content-title df"
-          onClick={() => {
-            // setParams({ ...params, brand: "", keyword: "" });
-            // setbrand("All category");
-            // setKeyword("");
-            // setValue("");
-            // navigate("/products");
-          }}
-        >
+        <h2 className="content-title df" onClick={() => {}}>
           <div>DANH SÁCH ĐƠN{isBan ? " BÁN" : " NHẬP"}</div>
           <button
             type="submit"
@@ -183,21 +222,80 @@ export default function ImportGio({ isBan }: any) {
           >
             show{" "}
           </button>
-          <div className={show ? "df" : "dn"}>
-            <div className="color__ff4545">{data1?.metadata?.totalCount}</div>
-            <div> | {formatMoney(totalAmount)} + </div>
-            <div className="color__ff4545">{formatMoney(totalOrderNot)}</div>
-            <div> = {formatMoney(+totalOrderNot + +totalAmount)}</div>
-            {/* {t("Products")} */}
-          </div>
         </h2>
       </div>
+      <h5 className={show ? "df" : "dn"}>
+        <div className="color__ff4545">{data1?.metadata?.totalCount}</div>
+        <div> | {formatMoney(totalAmount)} + </div>
+        <div className="color__ff4545">{formatMoney(totalOrderNot)}</div>
+        <div> = {formatMoney(+totalOrderNot + +totalAmount)}</div>
+        {/* {t("Products")} */}
+      </h5>
+      <div className="df items__center mt10px">
+        <h4 className="mb0px">THANH TOÁN</h4>
+        <Select
+          style={{ width: 94 }}
+          className="country__select mr2px w200px"
+          options={options}
+          value={params.isPaid}
+          onChange={(val) => {
+            onSearch("isPaid", val);
+            // cb_setTable(variant?.id, "label", val);
+            //   Object.keys(GIO).map((key) => {
+            //     if (val === key) {
+            //       setPrice(GIO[key]);
+            //     }
+            //   });
+            //   setLabel(val);
+          }}
+        />
+      </div>
+      <div className="input-group df items__center mt10px">
+        <Input
+          className="form-control rounded search w250px"
+          type="search"
+          placeholder="search"
+          allowClear
+          value={keySearch}
+          onChange={(e) => {
+            setKeySearch(e.target.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              onSearch("keySearch", keySearch);
+            }
+          }}
+        />
 
-      <div className="card mb-4 shadow-sm">
+        <button
+          type="submit"
+          onClick={() => {
+            onSearch("keySearch", keySearch);
+          }}
+          className="search-button h36px w100px"
+        >
+          search
+        </button>
+      </div>
+      <div className="card mb-4 shadow-sm mt10px">
         {/*         <header className="card-header bg-white "></header>
          */}
+        <AdminPagination
+          dataCount={data1?.metadata?.totalCount}
+          params={params}
+          currentPage={currentPage}
+          cb_setCurrentPage={(val: any) => {
+            setCurrentPage(val);
+          }}
+          cb_setParams={(val: any) => {
+            setParams(val);
+          }}
+          cb_setGoSearch={(val: any) => {
+            setGoSearch(val);
+          }}
+        ></AdminPagination>
         <div className="card-body">
-          {dataTable.map((item: any, index: number) => {
+          {dataTableRender.map((item: any, index: number) => {
             let totalOrder = 0;
             if (!item?.isGif) {
               totalOrder = item?.orderItems.reduce(
@@ -213,11 +311,13 @@ export default function ImportGio({ isBan }: any) {
               <div key={item?._id} className="mt20px">
                 <Row gutter={16} key={item?._id} className="mt20px">
                   <Col className="gutter-row" span={6}>
-                    <h5 style={style}> {index + 1}.</h5>
+                    <h5 style={style}> {index + 1 + +params.offset}.</h5>
                   </Col>
                   <Col
                     onClick={() => {
-                      navigate(`/thudung-list/${item?._id}?isBan=${item?.isBan}`);
+                      navigate(
+                        `/thudung-list/${item?._id}?isBan=${item?.isBan}`
+                      );
                     }}
                     className="gutter-row cursor__pointer"
                     span={6}
@@ -225,9 +325,9 @@ export default function ImportGio({ isBan }: any) {
                     <div style={style}>{item?.buyName}</div>
                   </Col>
                   <Col className="gutter-row" span={6}>
-                    <div style={style}>
-                      {moment(item?.sellDate).format(DATE_FORMAT)}
-                    </div>
+                    <h5 className="mb0px text__underline" style={style}>
+                      {item?.metadata}
+                    </h5>
                   </Col>
                   <Col className="gutter-row df content__end" span={6}>
                     <button
@@ -240,7 +340,9 @@ export default function ImportGio({ isBan }: any) {
                       }`}
                       // disabled={!isValid()}
                     >
-                      {item?.isPaid ? "RỒI " : "CHƯA "}THANH TOÁN
+                      {aa && <Spin size="large"></Spin>}
+
+                      {item?.isPaid ? "RỒI PAY" : "CHƯA PAY"}
                     </button>
                   </Col>
                 </Row>
@@ -249,7 +351,8 @@ export default function ImportGio({ isBan }: any) {
                     <Row key={ind} gutter={16} className="mt20px">
                       <Col className="gutter-row" span={6}>
                         <h5 style={style}>
-                          {index + 1}.{ind + 1}.{GIO_RENDER[item.label]}
+                          {index + 1 + +params.offset}.{ind + 1}.
+                          {GIO_RENDER[item.label]}
                         </h5>
                       </Col>
                       <Col className="gutter-row" span={6}>

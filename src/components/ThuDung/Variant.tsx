@@ -89,15 +89,13 @@ export default function Variant({ variant, cb_delTable, cb_setTable }: any) {
           className="form-control"
           id="product_price"
           required
-          value={formatMoney(variant?.quantity)}
+          value={variant?.quantity}
           onChange={(e) => {
-            let numInput = e.target.value;
-            numInput = numInput.replaceAll(",", "");
+            const numInput = e.target.value;
             if (numInput.length < 7)
-              cb_setTable(variant?.id, "quantity", +numInput);
-
-            if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
-            }
+              if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
+                cb_setTable(variant?.id, "quantity", numInput);
+              }
           }}
         />
       </div>

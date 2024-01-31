@@ -21,7 +21,7 @@ import { Radio } from "antd";
 import { openToast } from "../../store/components/customDialog/toastSlice";
 import type { CheckboxProps } from "antd";
 
-import { Checkbox } from "antd";
+import { Checkbox, Spin } from "antd";
 
 export default function GioDetail() {
   const navigate = useNavigate();
@@ -47,6 +47,7 @@ export default function GioDetail() {
       setaddress(_orderDetail?.address);
       setphone(_orderDetail?.phone);
       setmetadata(_orderDetail?.metadata);
+      setDiscount(_orderDetail?.discount ?? 0);
       setValue(_orderDetail?.isPaid ? 1 : 2);
       setDataTable(_orderDetail?.orderItems);
       setisBan(_orderDetail?.isBan);
@@ -81,6 +82,8 @@ export default function GioDetail() {
   const [address, setaddress] = useState<any>("");
   const [phone, setphone] = useState<any>("");
   const [metadata, setmetadata] = useState<any>("");
+  const [discount, setDiscount] = useState<any>(0);
+
   const [value, setValue] = useState<any>(1);
 
   const [dataTable, setDataTable] = useState<any>([]);
@@ -130,6 +133,7 @@ export default function GioDetail() {
         objectParams: {
           buyName,
           isGif,
+          discount,
           sellDate,
           metadata,
           address,
@@ -146,7 +150,10 @@ export default function GioDetail() {
   return (
     <section className="content-main">
       <div className="content-header">
-        <h2 className="content-title">CHI TIẾT ĐƠN {location.search.split("=")[1]==="true" ? " BÁN" : " NHẬP"}</h2>
+        <h2 className="content-title">
+          CHI TIẾT ĐƠN{" "}
+          {location.search.split("=")[1] === "true" ? " BÁN" : " NHẬP"}
+        </h2>
       </div>
 
       <div className="card mb-4 shadow-sm">
@@ -157,6 +164,7 @@ export default function GioDetail() {
             onClick={submitHandler}
             disabled={!isValid()}
           >
+            {aa1 && <Spin size="large"></Spin>}
             Publish now
           </button>
           <div className="mb-4 mt20px">
@@ -230,7 +238,24 @@ export default function GioDetail() {
               }}
             />
           </div>
-
+          <div className="mb-4">
+            <h6 className="form-label">GIẢM GIÁ</h6>
+            <input
+              type="number"
+              placeholder="GIẢM GIÁ"
+              className="form-control"
+              id="product_title"
+              required
+              value={discount}
+              onChange={(e) => {
+                const numInput = e.target.value;
+                if (numInput.length < 7)
+                  if (!numInput || numInput.match(RE_ONLY_NUMBER)) {
+                    setDiscount(e.target.value);
+                  }
+              }}
+            />
+          </div>
           <div className="mb-4">
             <h6 className="form-label">NOTE</h6>
             <input
