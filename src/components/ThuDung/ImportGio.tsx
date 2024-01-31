@@ -225,7 +225,7 @@ export default function ImportGio({ isBan }: any) {
         </h2>
       </div>
       <h5 className={show ? "df" : "dn"}>
-        <div className="color__ff4545">{data1?.metadata?.totalCount}</div>
+        <div className="color__ff4545">{data1?.metadata?.thuDungGios.filter((item: any) => !item?.isGif).length}/{data1?.metadata?.totalCount}</div>
         <div> | {formatMoney(totalObj?.totalAmountPaid)} + </div>
         <div className="color__ff4545">
           {formatMoney(totalObj?.totalAmountUnPaid)} -
@@ -237,7 +237,7 @@ export default function ImportGio({ isBan }: any) {
               +totalObj?.totalAmountPaid -
               +totalObj?.discount
           )}
-        </div>
+        </div> 
         {/* {t("Products")} */}
       </h5>
       <div className="df items__center mt10px">
