@@ -259,13 +259,13 @@ export default function ExportGio({ isBan }: any) {
             className="btn btn-warning"
             onClick={() => {
               setDataTable([
-                ...dataTable,
                 {
                   id: Date.now(),
                   label: "BAP_CUON",
                   price: isBan ? GIO["BAP_CUON"] : GIO_BUY["BAP_CUON"],
                   quantity: 1,
                 },
+                ...dataTable,
               ]);
             }}
           >

@@ -50,7 +50,7 @@ export const GIO_RENDER: any = {
   VIP: "GIÒ VIP 1KG",
   VIP_500G: "GIÒ VIP 500G",
   BAP_CUON: "BẮP CUỘN",
-  BAP_THUONG: "BẮP THƯỜNG",
+  BAP_THUONG: "BẮP TO",
   BAP_VAN: "BẮP VÂN",
   GAN_NGAM: "GÂN _NGÂM_",
   BAP_NGAM: "BẮP _NGÂM_",
