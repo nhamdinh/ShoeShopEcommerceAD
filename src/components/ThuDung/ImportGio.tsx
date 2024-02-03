@@ -207,6 +207,19 @@ export default function ImportGio({ isBan }: any) {
 
     setCurrentPage(1);
   };
+  let countdown: any = null;
+
+  useEffect(() => {
+    clearTimeout(countdown);
+    countdown = setTimeout(() => {
+      onSearch("keySearch", keySearch);
+    }, 600);
+
+    return () => {
+      clearTimeout(countdown);
+    };
+  }, [keySearch]);
+
   return (
     <section className="content-main">
       <div className="content-header ">
@@ -225,7 +238,13 @@ export default function ImportGio({ isBan }: any) {
         </h2>
       </div>
       <h5 className={show ? "df" : "dn"}>
-        <div className="color__ff4545">{data1?.metadata?.thuDungGios.filter((item: any) => !item?.isGif).length}/{data1?.metadata?.totalCount}</div>
+        <div className="color__ff4545">
+          {
+            data1?.metadata?.thuDungGios.filter((item: any) => !item?.isGif)
+              .length
+          }
+          /{data1?.metadata?.totalCount}
+        </div>
         <div> | {formatMoney(totalObj?.totalAmountPaid)} + </div>
         <div className="color__ff4545">
           {formatMoney(totalObj?.totalAmountUnPaid)} -
@@ -237,7 +256,7 @@ export default function ImportGio({ isBan }: any) {
               +totalObj?.totalAmountPaid -
               +totalObj?.discount
           )}
-        </div> 
+        </div>
         {/* {t("Products")} */}
       </h5>
       <div className="df items__center mt10px">
@@ -315,11 +334,10 @@ export default function ImportGio({ isBan }: any) {
                 [0]
               );
             }
-
             return (
               <div key={item?._id} className="mt20px">
                 <Row gutter={16} key={item?._id} className="mt20px">
-                  <Col className="gutter-row" span={6}>
+                  <Col className="gutter-row" span={8}>
                     <h5 style={style}> {index + 1 + +params.offset}.</h5>
                   </Col>
                   <Col
@@ -329,16 +347,16 @@ export default function ImportGio({ isBan }: any) {
                       );
                     }}
                     className="gutter-row cursor__pointer"
-                    span={6}
+                    span={4}
                   >
                     <div style={style}>{item?.buyName}</div>
                   </Col>
-                  <Col className="gutter-row" span={6}>
+                  <Col className="gutter-row" span={4}>
                     <h5 className="mb0px text__underline" style={style}>
                       {item?.metadata}
                     </h5>
                   </Col>
-                  <Col className="gutter-row df content__end" span={6}>
+                  <Col className="gutter-row df content__end" span={8}>
                     <button
                       type="submit"
                       onClick={() => {
@@ -358,19 +376,19 @@ export default function ImportGio({ isBan }: any) {
                 {item?.orderItems.map((item: any, ind: number) => {
                   return (
                     <Row key={ind} gutter={16} className="mt20px">
-                      <Col className="gutter-row" span={6}>
-                        <h5 style={style}>
+                      <Col className="gutter-row" span={8}>
+                        <h6 style={style}>
                           {index + 1 + +params.offset}.{ind + 1}.
                           {GIO_RENDER[item.label]}
-                        </h5>
+                        </h6>
                       </Col>
-                      <Col className="gutter-row" span={6}>
+                      <Col className="gutter-row" span={4}>
                         <div style={style}>{item.quantity}</div>
                       </Col>
-                      <Col className="gutter-row" span={6}>
+                      <Col className="gutter-row" span={4}>
                         <div style={style}>{item.price}</div>
                       </Col>
-                      <Col className="gutter-row df content__end" span={6}>
+                      <Col className="gutter-row df content__end" span={8}>
                         <div style={style}>
                           {formatMoney(+item.price * +item.quantity)}
                         </div>
@@ -379,13 +397,19 @@ export default function ImportGio({ isBan }: any) {
                   );
                 })}
                 <Row gutter={16} className="mt20px">
-                  <Col className="gutter-row" span={6}>
+                  <Col className="gutter-row" span={8}>
                     <h5 style={style}></h5>
                   </Col>
-                  <Col className="gutter-row" span={6}></Col>
-                  <Col className="gutter-row" span={6}></Col>
-                  <Col className="gutter-row df content__end" span={6}>
-                    <h5 style={style}>{formatMoney(totalOrder)}</h5>
+                  <Col className="gutter-row" span={4}></Col>
+                  <Col className="gutter-row" span={4}></Col>
+                  <Col className="gutter-row df content__end" span={8}>
+                    <h5 className="df " style={style}>
+                      <div>{formatMoney(totalOrder)} -</div>
+                      <div className="color__green df">
+                        {formatMoney(item?.discount)} =
+                      </div>
+                      <div>{formatMoney(+totalOrder - +item?.discount)}</div>
+                    </h5>
                   </Col>
                 </Row>
                 <Divider orientation="left"></Divider>
